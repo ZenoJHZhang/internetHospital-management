@@ -29,42 +29,35 @@ service.interceptors.request.use(
 
 // response interceptor
 service.interceptors.response.use(
-  response => response,
-  // response => {
-  //   const res = response.data
-  //   if (res.code !== 20000) {
-  //     Message({
-  //       message: res.message,
-  //       type: 'error',
-  //       duration: 5 * 1000
-  //     })
-  //     // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
-  //     if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-  //       // 请自行在引入 MessageBox
-  //       // import { Message, MessageBox } from 'element-ui'
-  //       MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
-  //         confirmButtonText: '重新登录',
-  //         cancelButtonText: '取消',
-  //         type: 'warning'
-  //       }).then(() => {
-  //         store.dispatch('FedLogOut').then(() => {
-  //           location.reload() // 为了重新实例化vue-router对象 避免bug
-  //         })
-  //       })
-  //     }
-  //     return Promise.reject('error')
-  //   } else {
-  //     return response.data
-  //   }
-  // },
+  response => {
+    return response;
+  },
   error => {
-    console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
-    return Promise.reject(error)
+    if (error.response) {
+      // 返回 401 
+      if (error.response.status == 401) {
+        //身份认证失败,清除token信息并跳转到登录页面
+        if (error.response.data.returnData == 40101) {
+          store.commit('remove_token');
+          store.state.errorTokenVisible = true;
+          store.state.errorTokenMessage = error.response.data.returnType;
+          router.push("/");
+        }
+        //权限不够，回退一步,token无需清除
+        if (error.response.data.returnData == 40102) {
+          router.push('401')
+        }
+      } else if (error.response.status == 400) {
+        store.state.errorTokenVisible = true;
+        store.state.errorTokenMessage = error.response.data.returnType;
+      }else {
+        store.state.errorTokenVisible = true;
+        store.state.errorTokenMessage = error.response.data.returnType;
+      }
+    } else {
+      store.state.errorTokenVisible = true;
+      store.state.errorTokenMessage = '服务器错误,请稍后再试';
+    }
   }
 )
 

@@ -1,38 +1,49 @@
 <template>
-  <div id="note" :style ="note">
-
-  <el-row>
-    <el-col :xs="8" :sm="9" :md="9" :lg="9" :xl="9">
-      <div class="grid-content">
-          <div><img :src="icon" style="height:100%;margin-left:20px;"/></div>
+  <div id="note" :style="note">
+    <el-row>
+      <el-col :xs="8" :sm="9" :md="9" :lg="9" :xl="9">
+        <div class="grid-content">
+          <div>
+            <img :src="icon" style="height:100%;margin-left:20px;">
+          </div>
           <!-- <div class="slogan">稳定，高效</div> -->
-      </div>
-    </el-col>
-    <el-col :xs="8" :sm="6" :md="6" :lg="6" :xl="6"><div class="grid-content"></div></el-col>
-    <el-col :xs="8" :sm="9" :md="9" :lg="9" :xl="9">
-      <div class="grid-content" id="login_field">
-        <div class="label" style="">帐号密码登录</div>
-        <el-input v-model="name" placeholder="账号"></el-input>
-        <el-input v-model="pass" placeholder="密码"></el-input>
-        <div></div>
-                <el-checkbox v-model="checked" style="margin:16px 0;">下次自动登录</el-checkbox>
-        <el-button type="primary" style="display:block;width:100%;margin:8px 0;"  @click="login()">登录</el-button>
-        <el-button type="text">忘记密码？</el-button>
-        <el-button type="text" style="float:right;margin-right:10px;">立即注册</el-button>
-      </div>
-    </el-col>
-  </el-row>
+        </div>
+      </el-col>
+      <el-col :xs="8" :sm="6" :md="6" :lg="6" :xl="6">
+        <div class="grid-content"></div>
+      </el-col>
+      <el-col :xs="8" :sm="9" :md="9" :lg="9" :xl="9">
+        <div class="grid-content" id="login_field">
+          <div class="label" style>帐号密码登录</div>
+          <el-input v-model="userInfo.phone" placeholder="账号"></el-input>
+          <el-input v-model="userInfo.password" placeholder="密码" type="password"></el-input>
+          <div></div>
+          <el-checkbox v-model="checked" style="margin:16px 0;">下次自动登录</el-checkbox>
+          <el-button
+            type="primary"
+            style="display:block;width:100%;margin:8px 0;"
+            @click="login()"
+          >登录</el-button>
+          <el-button type="text">忘记密码？</el-button>
+          <el-button type="text" style="float:right;margin-right:10px;">立即注册</el-button>
+        </div>
+      </el-col>
+    </el-row>
   </div>
-
 </template>
 <script>
+import { loginByUsername, logout, getUserInfo } from "@/api/login";
+import { getToken, setToken, removeToken } from "@/utils/auth";
 import logo from "@/assets/logo.png";
 export default {
   data() {
     return {
+      userInfo: {
+        phone: "",
+        password: ""
+      },
       icon: logo,
-      name: "",
-      pass: "",
+
       checked: false,
       note: {
         backgroundImage: "url(" + require("../../assets/cover.png") + ")",
@@ -47,11 +58,11 @@ export default {
   },
   mounted() {},
   methods: {
-      login(){
-          
-      }
+    login() {
+        this.$store.dispatch("LoginByUsername",this.userInfo);
+    }
   }
-}
+};
 </script>
 
 <style scoped>

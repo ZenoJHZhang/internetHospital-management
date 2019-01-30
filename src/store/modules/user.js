@@ -31,10 +31,13 @@ const user = {
   actions: {
     // 用户名登录
     LoginByUsername({ commit }, userInfo) {
-      const phone = userInfo.username.trim()
+      const phone = userInfo.phone.trim()
       return new Promise((resolve, reject) => {
         loginByUsername(phone, userInfo.password).then(response => {
-         console.log(response)
+          let token = response.data.returnData.token;
+         commit('SET_TOKEN',token);
+         setToken(token);
+         resolve(response);
         }).catch(error => {
           reject(error)
         })
