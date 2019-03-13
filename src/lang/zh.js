@@ -8,6 +8,7 @@ export default {
     pagePermission: '页面权限',
     directivePermission: '指令权限',
     icons: '图标',
+    deparmentManagement:'科室管理',
     components: '组件',
     componentIndex: '介绍',
     tinymce: '富文本编辑器',
@@ -75,7 +76,7 @@ export default {
   login: {
     title: '系统登录',
     logIn: '登录',
-    username: '账号',
+    phone: '手机号',
     password: '密码',
     any: '随便填',
     thirdparty: '第三方登录',

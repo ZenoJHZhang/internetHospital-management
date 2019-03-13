@@ -8,6 +8,7 @@ export default {
     pagePermission: 'Page Permission',
     directivePermission: 'Directive Permission',
     icons: 'Icons',
+    deparmentManagement: 'DeparmentManagement',
     components: 'Components',
     componentIndex: 'Introduction',
     tinymce: 'Tinymce',
@@ -75,7 +76,7 @@ export default {
   login: {
     title: 'Login Form',
     logIn: 'Log in',
-    username: 'Username',
+    phone: 'Phone',
     password: 'Password',
     any: 'any',
     thirdparty: 'Or connect with',

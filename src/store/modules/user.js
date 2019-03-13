@@ -46,13 +46,14 @@ const user = {
   actions: {
     // 用户名登录
     LoginByUsername({ commit }, userInfo) {
-      const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        loginByUsername(username, userInfo.password).then(response => {
-          const data = response.data
-          commit('SET_TOKEN', data.token)
-          setToken(response.data.token)
-          resolve()
+        loginByUsername(userInfo.phone.trim(), userInfo.password).then(response => {
+          if(response.data.returnCode == 200){
+            let data = response.data.returnData
+            commit('SET_TOKEN', data.token)
+            setToken(data.token)
+            resolve()
+          }
         }).catch(error => {
           reject(error)
         })
@@ -63,12 +64,7 @@ const user = {
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token).then(response => {
-          // 由于mockjs 不支持自定义状态码只能这样hack
-          if (!response.data) {
-            reject('Verification failed, please login again.')
-          }
-          const data = response.data
-
+          const data = response.data.returnData
           if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.roles)
           } else {

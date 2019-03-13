@@ -1,14 +1,12 @@
-/**
- * Created by jiachenpan on 16/11/18.
- */
+
 
 export function isExternal(path) {
   return /^(https?:|mailto:|tel:)/.test(path)
 }
 
-export function validUsername(str) {
-  const valid_map = ['admin', 'editor']
-  return valid_map.indexOf(str.trim()) >= 0
+export function validPhone(str) {
+  const reg = /^0?(13|14|15|17|18|19)[0-9]{9}$/
+  return reg.test(str)
 }
 
 /* 合法uri*/
