@@ -1,5 +1,8 @@
 import { loginByUsername, logout, getUserInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import {
+  Message
+} from 'element-ui';
 
 const user = {
   state: {
@@ -52,6 +55,10 @@ const user = {
             let data = response.data.returnData
             commit('SET_TOKEN', data.token)
             setToken(data.token)
+            resolve()
+          }
+          else if (response.data.returnCode == 400){
+            Message.error(response.data.returnType);
             resolve()
           }
         }).catch(error => {

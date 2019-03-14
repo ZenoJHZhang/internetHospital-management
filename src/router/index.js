@@ -121,17 +121,28 @@ export const asyncRouterMap = [{
   {
     path: '/deparmentManagement',
     component: Layout,
+    meta: {
+      roles: ['superAdmin', 'doctorAdmin'],
+    },
     children: [{
       component: () => import('@/views/department/index'),
       path: 'index',
       name: 'DeparmentManagement',
       meta: {
         title: 'deparmentManagement',
-        noCache: true,
-        roles: ['超级管理员', '医生管理员'],
+        roles: ['superAdmin', 'doctorAdmin'],
         icon: 'department'
       }
-    }, ]
+    }, {
+      component: () => import('@/views/department/editDepartment'),
+      path: 'editDepartment',
+      name: 'EditDepartment',
+      meta: {
+        title: 'editDepartment',
+        roles: ['superAdmin', 'doctorAdmin'],
+      },
+      hidden:true
+    }]
   },
   {
     path: '/icon',

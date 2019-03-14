@@ -36,6 +36,7 @@ service.interceptors.response.use(
   },
   error => {
     if (error.response) {
+      alert('错误测试')
       // 返回 401 
       if (error.response.status == 401) {
         //身份认证失败,清除token信息并跳转到登录页面

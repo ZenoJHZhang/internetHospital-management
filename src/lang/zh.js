@@ -9,6 +9,7 @@ export default {
     directivePermission: '指令权限',
     icons: '图标',
     deparmentManagement:'科室管理',
+    editDepartment:'编辑科室',
     components: '组件',
     componentIndex: '介绍',
     tinymce: '富文本编辑器',

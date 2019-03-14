@@ -9,6 +9,7 @@ export default {
     directivePermission: 'Directive Permission',
     icons: 'Icons',
     deparmentManagement: 'DeparmentManagement',
+    editDepartment: 'EditDepartment',
     components: 'Components',
     componentIndex: 'Introduction',
     tinymce: 'Tinymce',
