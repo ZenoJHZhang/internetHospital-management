@@ -22,3 +22,21 @@ export function getDepartmentById(departmentId) {
     }
   })
 }
+
+export function updateDepartment(department) {
+  return request({
+    url: '/managementDepartment/updateDepartment',
+    method: 'post',
+    data: department
+  })
+}
+
+export function insertDepartmentImg(imgStr) {
+  return request({
+    url: '/img/insertDepartmentImg',
+    method: 'post',
+    params: {
+      imgStr
+    }
+  })
+}
