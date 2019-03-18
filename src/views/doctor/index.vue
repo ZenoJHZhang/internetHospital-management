@@ -12,15 +12,14 @@
             />
           </el-col>
           <el-col :span="8">
-            <el-button-group>
-              <el-button type="primary" icon="el-icon-menu" @click="changeDepartmentType(2)">全部科室</el-button>
-              <el-button type="primary" icon="el-icon-star-on" @click="changeDepartmentType(1)">专家科室</el-button>
-              <el-button
-                type="primary"
-                icon="el-icon-star-off"
-                @click="changeDepartmentType(0)"
-              >普通科室</el-button>
-            </el-button-group>
+            <span style="font-weight:700;margin-right:15px">科室筛选:</span>
+            <el-select v-model="value" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"/>
+            </el-select>
           </el-col>
           <el-col :span="2">
             <el-button type="success" icon="el-icon-edit" @click="goInsertDepartment()">新增科室</el-button>
@@ -155,7 +154,84 @@ export default {
       departmentList: [],
       departmentMessage: '',
       confirmDeleteVisible: false,
-      departmentId: 1
+      departmentId: 1,
+      options: [{
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }, {
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }, {
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }, {
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }, {
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }],
+      value: ''
     }
   },
   mounted() {
@@ -215,6 +291,9 @@ export default {
     confirmDelete(departmentId) {
       this.departmentId = departmentId
       this.confirmDeleteVisible = true
+    },
+    handleCommand(command) {
+      this.$message('click on item ' + command)
     }
   }
 }

@@ -31,12 +31,31 @@ export function updateDepartment(department) {
   })
 }
 
-export function insertDepartmentImg(imgStr) {
+export function insertDepartmentImg(imgStr, departmentId) {
   return request({
     url: '/img/insertDepartmentImg',
     method: 'post',
     params: {
-      imgStr
+      imgStr,
+      departmentId
+    }
+  })
+}
+
+export function insertDepartment(department) {
+  return request({
+    url: '/managementDepartment/insertDepartment',
+    method: 'post',
+    data: department
+  })
+}
+
+export function deleteDepartment(departmentId) {
+  return request({
+    url: '/managementDepartment/deleteDepartment',
+    method: 'post',
+    params: {
+      departmentId
     }
   })
 }

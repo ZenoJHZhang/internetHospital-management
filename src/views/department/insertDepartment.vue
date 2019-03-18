@@ -47,7 +47,7 @@
           <el-input v-model="departmentForm.price" max="400" type="number" step="0.1"/>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('departmentForm')">立即更新</el-button>
+          <el-button type="primary" @click="submitForm('departmentForm')">立即新增</el-button>
           <el-button type="info" @click="goBack()">取消</el-button>
         </el-form-item>
       </el-form>
@@ -57,8 +57,7 @@
 
 <script>
 import {
-  getDepartmentById,
-  updateDepartment,
+  insertDepartment,
   insertDepartmentImg
 } from '@/api/department'
 import 'babel-polyfill' // es6 shim
@@ -74,10 +73,11 @@ export default {
         departmentNumber: '',
         introduce: '',
         phone: '',
-        deptType: 0,
-        price: '',
+        deptType: '',
+        price: '0.00',
         id: '',
-        imgPath: ''
+        imgPath:
+          'https://www.woniuyiliao.cn/image/department/ff74c676-984e-4c7c-972f-28b94a3be1bb.png'
       },
       rules: {
         departmentName: [
@@ -110,15 +110,17 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(function init() {
-      this.getDepartmentDetail()
-    })
+    this.$nextTick(function init() {})
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          updateDepartment(this.departmentForm).then(response => {
+          // 科室图片用户未设置，则为默认科室图片
+          if (!this.changeImgFlag) {
+            this.departmentForm.imgId = 1
+          }
+          insertDepartment(this.departmentForm).then(response => {
             if (response.data.returnCode === 200) {
               if (this.changeImgFlag) {
                 insertDepartmentImg(
@@ -127,34 +129,20 @@ export default {
                 ).then(response => {
                   if (response.data.returnCode === 200) {
                     this.$store.state.errorTokenVisible = true
-                    this.$store.state.errorTokenMessage = '更新科室成功！'
+                    this.$store.state.errorTokenMessage = '新增科室成功！'
+                    this.$router.push({ name: 'DeparmentManagement' })
                   }
                 })
               } else {
                 this.$store.state.errorTokenVisible = true
-                this.$store.state.errorTokenMessage = '更新科室成功！'
+                this.$store.state.errorTokenMessage = '新增科室成功！'
+                this.$router.push({ name: 'DeparmentManagement' })
               }
             }
           })
         } else {
           return false
         }
-      })
-    },
-    getDepartmentDetail() {
-      const departmentId = this.$route.query.departmentId
-      if (departmentId == null) {
-        this.$router.push({ name: 'DeparmentManagement' })
-      }
-      return new Promise((resolve, reject) => {
-        getDepartmentById(departmentId)
-          .then(response => {
-            this.departmentForm = response.data.returnData
-            resolve(response)
-          })
-          .catch(error => {
-            reject(error)
-          })
       })
     },
     toggleShow() {

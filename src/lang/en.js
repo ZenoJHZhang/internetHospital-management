@@ -10,6 +10,8 @@ export default {
     icons: 'Icons',
     deparmentManagement: 'DeparmentManagement',
     editDepartment: 'EditDepartment',
+    insertDepartment: 'InsertDepartment',
+    doctorManagement: 'DoctorManagement',
     components: 'Components',
     componentIndex: 'Introduction',
     tinymce: 'Tinymce',

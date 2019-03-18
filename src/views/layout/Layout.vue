@@ -7,12 +7,14 @@
       <tags-view/>
       <app-main/>
     </div>
+    <error-token/>
   </div>
 </template>
 
 <script>
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
+import errorToken from '@/components/common/errorToken.vue'
 
 export default {
   name: 'Layout',
@@ -20,7 +22,8 @@ export default {
     Navbar,
     Sidebar,
     AppMain,
-    TagsView
+    TagsView,
+    errorToken
   },
   mixins: [ResizeMixin],
   computed: {
