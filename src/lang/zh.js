@@ -12,6 +12,8 @@ export default {
     editDepartment: '编辑科室',
     insertDepartment: '新增科室',
     doctorManagement: '医生管理',
+    editDoctor: '编辑医生',
+    insertDoctor: '新增医生',
     components: '组件',
     componentIndex: '介绍',
     tinymce: '富文本编辑器',

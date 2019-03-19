@@ -152,7 +152,8 @@ export const asyncRouterMap = [{
       roles: ['superAdmin', 'doctorAdmin']
     },
     hidden: true
-  }]
+  }
+  ]
 },
 {
   path: '/doctorManagement',
@@ -169,7 +170,27 @@ export const asyncRouterMap = [{
       roles: ['superAdmin', 'doctorAdmin'],
       icon: 'doctor'
     }
-  }]
+  }, {
+    component: () => import('@/views/doctor/editDoctor'),
+    path: 'editDoctor',
+    name: 'EditDoctor',
+    meta: {
+      title: 'editDoctor',
+      roles: ['superAdmin', 'doctorAdmin']
+    },
+    hidden: true
+  },
+  {
+    component: () => import('@/views/department/insertDepartment'),
+    path: 'insertDepartment',
+    name: 'InsertDepartment',
+    meta: {
+      title: 'insertDepartment',
+      roles: ['superAdmin', 'doctorAdmin']
+    },
+    hidden: true
+  }
+  ]
 },
 {
   path: '/icon',

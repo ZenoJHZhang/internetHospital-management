@@ -12,6 +12,8 @@ export default {
     editDepartment: 'EditDepartment',
     insertDepartment: 'InsertDepartment',
     doctorManagement: 'DoctorManagement',
+    editDoctor: 'EditDoctor',
+    insertDoctor: 'InsertDoctor',
     components: 'Components',
     componentIndex: 'Introduction',
     tinymce: 'Tinymce',

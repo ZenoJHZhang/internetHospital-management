@@ -7,20 +7,21 @@
         :model="departmentForm"
         :rules="rules"
         label-width="100px"
-        class="demo-departmentForm"
         style="width:50%;"
       >
         <el-form-item label="科室图片" prop="departmentImg">
-          <my-upload
-            v-model="show"
-            :width="160"
-            :height="110"
-            field="img"
-            img-format="png"
-            with-credentials
-            no-circle
-            @crop-success="cropSuccess"
-          />
+          <span style="margin-left:20px">
+            <my-upload
+              v-model="show"
+              :width="160"
+              :height="110"
+              field="img"
+              img-format="png"
+              with-credentials
+              no-circle
+              @crop-success="cropSuccess"
+            />
+          </span>
           <img :src="imgDataUrl != ''?imgDataUrl:departmentForm.imgPath">
           <el-button type="primary" style="margin-left:50px" @click="toggleShow">选择科室示例图</el-button>
         </el-form-item>
