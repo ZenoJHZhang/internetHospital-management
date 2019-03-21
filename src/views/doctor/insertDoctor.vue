@@ -27,10 +27,10 @@
             <el-button type="primary" style="margin-left:50px" @click="toggleShow">选择医生示例图</el-button>
           </el-form-item>
           <el-form-item label="医生姓名" prop="doctorName" style="width:50%">
-            <span>{{ doctorForm.doctorName }}</span>
+            <el-input v-model="doctorForm.doctorName" max="400"/>
           </el-form-item>
           <el-form-item label="身份证号" prop="doctorIdCard" style="width:50%">
-            <span>{{ doctorForm.doctorIdCard }}</span>
+            <el-input v-model="doctorForm.doctorIdCard" max="400"/>
           </el-form-item>
           <el-form-item label="医生工号" prop="doctorNumber" style="width:50%">
             <el-input v-model="doctorForm.doctorNumber" max="400"/>
@@ -77,7 +77,7 @@
             >+ 新增医生所属科室</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('doctorForm')">立即更新</el-button>
+            <el-button type="primary" @click="submitForm('doctorForm')">立即新增</el-button>
             <el-button type="info" @click="goBack()">取消</el-button>
           </el-form-item>
         </el-form>
@@ -134,7 +134,7 @@
 </template>
 
 <script>
-import { getDoctorById, updateDoctor, insertDoctorImg } from '@/api/doctor'
+import { insertDoctor, insertDoctorImg } from '@/api/doctor'
 import { listDepartmentByNameOrNumberWithDepartmentMessage } from '@/api/department'
 import 'babel-polyfill' // es6 shim
 import myUpload from 'vue-image-crop-upload'
@@ -158,9 +158,23 @@ export default {
         goodAt: '',
         phone: '',
         departmentList: [],
-        imgPath: ''
+        imgPath:
+          'https://www.woniuyiliao.cn/image/doctor/d2944b83-34ff-4d9d-be1e-4c342447879e.png'
       },
       rules: {
+        doctorName: [
+          { required: true, message: '请输入医生姓名', trigger: 'change' },
+          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+        ],
+        doctorIdCard: [
+          { required: true, message: '请输入医生身份证号', trigger: 'blur' },
+          {
+            pattern:
+              '^[1-9]\\d{5}(18|19|20)\\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]',
+            message: '身份证号不符合规范',
+            trigger: 'blur'
+          }
+        ],
         goodAt: [
           { required: true, message: '请输入医生擅长', trigger: 'blur' }
         ],
@@ -222,51 +236,38 @@ export default {
   },
   mounted() {
     this.$nextTick(function init() {
-      this.getDoctorDetail()
+      // this.getDoctorDetail();
     })
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          // 医生头像未设置，则为默认医生头像
+          if (!this.changeImgFlag) {
+            this.doctorForm.imgId = 2
+          }
           this.doctorForm.departmentList = this.doctorDepartmentList
-          updateDoctor(this.doctorForm).then(response => {
+          insertDoctor(this.doctorForm).then(response => {
             if (response.data.returnCode === 200) {
               if (this.changeImgFlag) {
                 insertDoctorImg(this.imgDataUrl, response.data.returnData).then(
                   response => {
                     if (response.data.returnCode === 200) {
                       this.$store.state.errorTokenVisible = true
-                      this.$store.state.errorTokenMessage = '更新医生成功！'
+                      this.$store.state.errorTokenMessage = '新增医生成功！'
                     }
                   }
                 )
               } else {
                 this.$store.state.errorTokenVisible = true
-                this.$store.state.errorTokenMessage = '更新医生成功！'
+                this.$store.state.errorTokenMessage = '新增医生成功！'
               }
             }
           })
         } else {
           return false
         }
-      })
-    },
-    getDoctorDetail() {
-      const doctorId = this.$route.query.doctorId
-      if (doctorId == null) {
-        this.$router.push({ name: 'DoctorManagement' })
-      }
-      return new Promise((resolve, reject) => {
-        getDoctorById(doctorId)
-          .then(response => {
-            this.doctorForm = response.data.returnData
-            this.doctorDepartmentList = this.doctorForm.departmentList
-            resolve(response)
-          })
-          .catch(error => {
-            reject(error)
-          })
       })
     },
     toggleShow() {
@@ -277,7 +278,7 @@ export default {
       this.changeImgFlag = true
     },
     goBack() {
-      this.$router.push({ name: 'DeparmentManagement' })
+      this.$router.push({ name: 'DoctorManagement' })
     },
     /**
      * 从所属科室列表移除该科室

@@ -22,3 +22,41 @@ export function getDoctorById(doctorId) {
     }
   })
 }
+
+export function updateDoctor(doctor) {
+  return request({
+    url: '/managementDoctor/updateDoctor',
+    method: 'post',
+    data: doctor
+  })
+}
+
+export function insertDoctor(doctor) {
+  return request({
+    url: '/managementDoctor/insertDoctor',
+    method: 'post',
+    data: doctor
+  })
+}
+
+export function deleteDoctor(doctorId) {
+  return request({
+    url: '/managementDoctor/deleteDoctor',
+    method: 'post',
+    params: {
+      doctorId
+    }
+  })
+}
+
+export function insertDoctorImg(imgStr, doctorId) {
+  return request({
+    url: '/img/insertDoctorImg',
+    method: 'post',
+    params: {
+      imgStr,
+      doctorId
+    }
+  })
+}
+

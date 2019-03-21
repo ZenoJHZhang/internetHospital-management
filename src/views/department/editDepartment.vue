@@ -82,7 +82,7 @@ export default {
       },
       rules: {
         departmentName: [
-          { required: true, message: '请输入科室类型', trigger: 'blur' },
+          { required: true, message: '请输入科室名', trigger: 'blur' },
           { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
         ],
         departmentNumber: [

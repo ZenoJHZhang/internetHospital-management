@@ -11,19 +11,8 @@
               @keyup.native="listDoctorByNameOrNumberWithDepartmentId(0)"
             />
           </el-col>
-          <el-col :span="8">
-            <span style="font-weight:700;margin-right:15px">科室筛选:</span>
-            <el-cascader
-              ref="departmentList"
-              :options="departmentList"
-              :show-all-levels="false"
-              placeholder="科室名"
-              filterable
-              @change="makeDepartmentId"
-            />
-          </el-col>
           <el-col :span="2">
-            <el-button type="success" icon="el-icon-edit" @click="goInsertDepartment()">新增科室</el-button>
+            <el-button type="success" icon="el-icon-edit" @click="goInsertDector()">新增医生</el-button>
           </el-col>
         </el-row>
       </el-header>
@@ -33,7 +22,11 @@
             <el-card :body-style="{ padding: '0px', height:'360px',}" shadow="hover">
               <div slot="header">
                 <span style="font-weight:700;font-size:18px">{{ doctor.doctorName }}</span>
-                <el-button style="float: right; padding: 3px 0" type="text">
+                <el-button
+                  style="float: right; padding: 3px 0"
+                  type="text"
+                  @click="confirmDelete(doctor.id)"
+                >
                   <i class="el-icon-delete"/>删除医生
                 </el-button>
                 <el-button
@@ -118,13 +111,13 @@
         />
       </el-footer>
     </el-container>
-    <!-- <el-dialog :visible.sync="confirmDeleteVisible" :show-close="false" title="提示" width="30%">
-      <span>确认删除科室?</span>
+    <el-dialog :visible.sync="confirmDeleteVisible" :show-close="false" title="提示" width="30%">
+      <span>确认删除医生?</span>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="deleteDepartment(departmentId)">确 定</el-button>
+        <el-button type="primary" @click="deleteDoctor(doctorId)">确 定</el-button>
         <el-button type="info" @click="confirmDeleteVisible=false">取 消</el-button>
       </span>
-    </el-dialog>-->
+    </el-dialog>
   </div>
 </template>
 
@@ -150,41 +143,26 @@
 </style>
 
 <script>
-import { listDoctorByNameOrNumberWithDepartmentId } from '@/api/doctor'
-import { listDepartmentByNameOrNumberWithDepartmentMessage } from '@/api/department'
+import {
+  listDoctorByNameOrNumberWithDepartmentId,
+  deleteDoctor
+} from '@/api/doctor'
 export default {
   data() {
     return {
+      doctorId: 0,
       departmentId: 0,
       doctorMessage: '',
       pageNumber: 1,
       pageSize: 4,
       total: 1,
       doctorList: [],
-      departmentList: [
-        {
-          value: '0',
-          label: '全部科室'
-        },
-        {
-          value: 'normalDepartment',
-          label: '普通科室',
-          children: []
-        },
-        {
-          value: 'expertDepartment',
-          label: '专家科室',
-          children: []
-        }
-      ],
-      normalDepartmentList: [],
-      expertDepartmentList: []
+      confirmDeleteVisible: false
     }
   },
   mounted() {
     this.$nextTick(function init() {
       this.listDoctorByNameOrNumberWithDepartmentId()
-      this.makeCascader()
     })
   },
   methods: {
@@ -205,60 +183,29 @@ export default {
         }
       })
     },
-    /**
-     * 生成科室多级选择器
-     */
-    makeCascader() {
-      listDepartmentByNameOrNumberWithDepartmentMessage('', 2, 0, 0).then(
-        response => {
-          if (response.data.returnCode === 200) {
-            const data = response.data.returnData
-            const list = data.list
-            list.forEach((item, index) => {
-              if (item.deptType === 0) {
-                const normalDepartment = {
-                  value: '',
-                  label: ''
-                }
-                normalDepartment.label = item.departmentName
-                normalDepartment.value = item.id
-                this.normalDepartmentList.push(normalDepartment)
-              } else if (item.deptType === 1) {
-                const expertDepartment = {
-                  value: '',
-                  label: ''
-                }
-                expertDepartment.label = item.departmentName
-                expertDepartment.value = item.id
-                this.expertDepartmentList.push(expertDepartment)
-              }
-            })
-            this.$set(
-              this.departmentList[1],
-              'children',
-              this.normalDepartmentList
-            )
-            this.$set(
-              this.departmentList[2],
-              'children',
-              this.expertDepartmentList
-            )
-          }
-        }
-      )
-    },
-    makeDepartmentId() {
-      if (this.$refs.departmentList.currentValue.length === 1) {
-        this.departmentId = 0
-      } else {
-        this.departmentId = this.$refs.departmentList.currentValue[1]
-      }
-      this.listDoctorByNameOrNumberWithDepartmentId(0)
-    },
     editDoctor(doctorId) {
       this.$router.push({
         name: 'EditDoctor',
         query: { doctorId: doctorId }
+      })
+    },
+    goInsertDector() {
+      this.$router.push({
+        name: 'InsertDoctor'
+      })
+    },
+    confirmDelete(doctorId) {
+      this.doctorId = doctorId
+      this.confirmDeleteVisible = true
+    },
+    deleteDoctor(doctorId) {
+      deleteDoctor(doctorId).then(response => {
+        this.confirmDeleteVisible = false
+        if (response.data.returnCode === 200) {
+          this.$store.state.errorTokenVisible = true
+          this.$store.state.errorTokenMessage = '删除医生成功！'
+          this.listDoctorByNameOrNumberWithDepartmentId(0)
+        }
       })
     }
   }
