@@ -193,6 +193,41 @@ export const asyncRouterMap = [{
   ]
 },
 {
+  path: '/scheduleManagement',
+  component: Layout,
+  meta: {
+    roles: ['superAdmin', 'doctorAdmin']
+  },
+  children: [{
+    component: () => import('@/views/schedule/index'),
+    path: 'index',
+    name: 'ScheduleManagement',
+    meta: {
+      title: 'scheduleManagement',
+      roles: ['superAdmin', 'doctorAdmin'],
+      icon: '排班'
+    }
+  }, {
+    component: () => import('@/views/schedule/normalDepartmentSchdule'),
+    path: 'normalDepartmentSchdule',
+    name: 'NormalDepartmentSchdule',
+    meta: {
+      title: 'normalDepartmentSchdule',
+      roles: ['superAdmin', 'doctorAdmin']
+    },
+    hidden: true
+  }, {
+    component: () => import('@/views/schedule/expertDepartmentSchedule'),
+    path: 'expertDepartmentSchedule',
+    name: 'ExpertDepartmentSchedule',
+    meta: {
+      title: 'expertDepartmentSchedule',
+      roles: ['superAdmin', 'doctorAdmin']
+    },
+    hidden: true
+  }]
+},
+{
   path: '/icon',
   component: Layout,
   children: [{
