@@ -46,3 +46,41 @@ export function deleteNormal(scheduleDepartmentId, timeInterval) {
     }
   })
 }
+
+export function listExpert(departmentId, scheduleTime) {
+  return request({
+    url: '/managementExpertSchedule/list',
+    method: 'post',
+    params: {
+      departmentId,
+      scheduleTime,
+      type: 1
+    }
+  })
+}
+
+export function updateExpert(scheduleDoctorId, timeInterval, totalNumber) {
+  return request({
+    url: '/managementExpertSchedule/update',
+    method: 'post',
+    params: {
+      scheduleDoctorId,
+      timeInterval,
+      totalNumber
+    }
+  })
+}
+
+export function insertExpert(departmentId, doctorId, scheduleTime, timeInterval, totalNumber) {
+  return request({
+    url: '/managementExpertSchedule/insert',
+    method: 'post',
+    params: {
+      departmentId,
+      doctorId,
+      scheduleTime,
+      timeInterval,
+      totalNumber
+    }
+  })
+}

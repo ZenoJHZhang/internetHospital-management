@@ -127,7 +127,12 @@
 </template>
 
 <script>
-import { listNormal, updateNormal, insertNormal, deleteNormal } from '@/api/schedule'
+import {
+  listNormal,
+  updateNormal,
+  insertNormal,
+  deleteNormal
+} from '@/api/schedule'
 import { getDepartmentById } from '@/api/department'
 import dateUtil from '@/utils/dateUtil'
 export default {
@@ -215,53 +220,75 @@ export default {
       })
     },
     handleDelete(index, row) {
-      deleteNormal(row.scheduleDepartmentId, row.timeInterval).then(response => {
-        if (response.data.returnCode === 200) {
-          this.$store.state.errorTokenVisible = true
-          this.$store.state.errorTokenMessage = '普通科室排班删除成功！'
-          this.listNormalDepartmentSchedule()
-        }
-      })
-    },
-    updateScheduleDepartment(row) {
-      updateNormal(row.scheduleDepartmentId, row.timeInterval, row.totalNumber).then(
+      deleteNormal(row.scheduleDepartmentId, row.timeInterval).then(
         response => {
           if (response.data.returnCode === 200) {
             this.$store.state.errorTokenVisible = true
-            this.$store.state.errorTokenMessage = '普通科室排班更新成功！'
+            this.$store.state.errorTokenMessage = '普通科室排班删除成功！'
             this.listNormalDepartmentSchedule()
           }
         }
       )
     },
+    updateScheduleDepartment(row) {
+      if (
+        typeof row.totalNumber === 'undefined' ||
+        typeof row.timeInterval === 'undefined'
+      ) {
+        this.$store.state.errorTokenVisible = true
+        this.$store.state.errorTokenMessage = '请将排班信息填写完整'
+      } else {
+        updateNormal(
+          row.scheduleDepartmentId,
+          row.timeInterval,
+          row.totalNumber
+        ).then(response => {
+          if (response.data.returnCode === 200) {
+            this.$store.state.errorTokenVisible = true
+            this.$store.state.errorTokenMessage = '普通科室排班更新成功！'
+            this.listNormalDepartmentSchedule()
+          }
+        })
+      }
+    },
     insertScheduleDepartment() {
       const totalNumber = this.insertTable[0].totalNumber
       const timeInterval = this.insertTable[0].timeInterval
-      if (this.tableData.length !== 0) {
-        updateNormal(this.scheduleDepartmentId, timeInterval, totalNumber).then(
-          response => {
+      if (
+        typeof totalNumber === 'undefined' ||
+        typeof timeInterval === 'undefined'
+      ) {
+        this.$store.state.errorTokenVisible = true
+        this.$store.state.errorTokenMessage = '请将排班信息填写完整'
+      } else {
+        if (this.tableData.length !== 0) {
+          updateNormal(
+            this.scheduleDepartmentId,
+            timeInterval,
+            totalNumber
+          ).then(response => {
             if (response.data.returnCode === 200) {
               this.$store.state.errorTokenVisible = true
               this.$store.state.errorTokenMessage = '普通科室排班新增成功！'
               this.listNormalDepartmentSchedule()
               this.insertTableVisable = false
             }
-          }
-        )
-      } else {
-        insertNormal(
-          this.departmentId,
-          this.scheduleTime,
-          timeInterval,
-          totalNumber
-        ).then(response => {
-          if (response.data.returnCode === 200) {
-            this.$store.state.errorTokenVisible = true
-            this.$store.state.errorTokenMessage = '普通科室排班新增成功！'
-            this.listNormalDepartmentSchedule()
-            this.insertTableVisable = false
-          }
-        })
+          })
+        } else {
+          insertNormal(
+            this.departmentId,
+            this.scheduleTime,
+            timeInterval,
+            totalNumber
+          ).then(response => {
+            if (response.data.returnCode === 200) {
+              this.$store.state.errorTokenVisible = true
+              this.$store.state.errorTokenMessage = '普通科室排班新增成功！'
+              this.listNormalDepartmentSchedule()
+              this.insertTableVisable = false
+            }
+          })
+        }
       }
       // 清空，防止下次新增时原先数据影响
       this.insertTable = [{}]
