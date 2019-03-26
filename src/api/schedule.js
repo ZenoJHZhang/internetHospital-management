@@ -84,3 +84,14 @@ export function insertExpert(departmentId, doctorId, scheduleTime, timeInterval,
     }
   })
 }
+
+export function deleteExpert(scheduleDoctorId, timeInterval) {
+  return request({
+    url: '/managementExpertSchedule/delete',
+    method: 'post',
+    params: {
+      scheduleDoctorId,
+      timeInterval
+    }
+  })
+}

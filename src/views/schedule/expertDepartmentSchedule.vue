@@ -180,7 +180,12 @@
 <script>
 import dateUtil from '@/utils/dateUtil'
 import { getDoctorById } from '@/api/doctor'
-import { listExpert, updateExpert, insertExpert } from '@/api/schedule'
+import {
+  listExpert,
+  updateExpert,
+  insertExpert,
+  deleteExpert
+} from '@/api/schedule'
 export default {
   data() {
     return {
@@ -205,21 +210,7 @@ export default {
       tableData: [{}],
       todayScheduleDoctorDtoList: [],
       noDoctor: false,
-      insertTable: [{}],
-      timeIntervalSelect: [
-        {
-          value: '上午',
-          label: '上午'
-        },
-        {
-          value: '下午',
-          label: '下午'
-        },
-        {
-          value: '晚上',
-          label: '晚上'
-        }
-      ]
+      insertTable: [{}]
     }
   },
   mounted() {
@@ -273,15 +264,13 @@ export default {
       })
     },
     handleDelete(index, row) {
-      // deleteNormal(row.scheduleDepartmentId, row.timeInterval).then(
-      //   response => {
-      //     if (response.data.returnCode === 200) {
-      //       this.$store.state.errorTokenVisible = true
-      //       this.$store.state.errorTokenMessage = '专家科室排班删除成功！'
-      //       this.listNormalDepartmentSchedule()
-      //     }
-      //   }
-      // )
+      deleteExpert(row.scheduleDoctorId, row.timeInterval).then(response => {
+        if (response.data.returnCode === 200) {
+          this.$store.state.errorTokenVisible = true
+          this.$store.state.errorTokenMessage = '专家科室排班删除成功！'
+          this.listExpert()
+        }
+      })
     },
     updateScheduleDoctor(row) {
       if (
@@ -306,15 +295,28 @@ export default {
     },
     // 筛选出未排班的时段
     filterTimeInterval(item) {
-      const time = this.timeIntervalSelect
-      time.forEach(element => {
+      const time = [
+        {
+          value: '上午',
+          label: '上午'
+        },
+        {
+          value: '下午',
+          label: '下午'
+        },
+        {
+          value: '晚上',
+          label: '晚上'
+        }
+      ]
+      for (let i = 0; i < time.length; i++) {
         item.scheduleDoctorDtoList.forEach(t => {
-          if (t.timeInterval === element.value) {
-            time.splice(time.indexOf(element), 1)
+          if (t.timeInterval === time[i].value) {
+            time.splice(i, 1)
           }
         })
-      })
-      item.time = time
+      }
+      this.$set(item, 'time', time)
     },
     toggle(item) {
       item.show = !item.show
@@ -331,7 +333,7 @@ export default {
         this.$store.state.errorTokenVisible = true
         this.$store.state.errorTokenMessage = '请将排班信息填写完整'
       } else {
-        if (item.length !== 0) {
+        if (item.scheduleDoctorDtoList.length !== 0) {
           scheduleDoctorId = item.scheduleDoctorDtoList[0].scheduleDoctorId
           updateExpert(scheduleDoctorId, timeInterval, totalNumber).then(
             response => {

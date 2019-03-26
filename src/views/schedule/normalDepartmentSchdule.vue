@@ -188,6 +188,20 @@ export default {
       }
       listNormal(this.departmentId, this.scheduleTime).then(response => {
         if (response.data.returnCode === 200) {
+          this.timeIntervalSelect = [
+            {
+              value: '上午',
+              label: '上午'
+            },
+            {
+              value: '下午',
+              label: '下午'
+            },
+            {
+              value: '晚上',
+              label: '晚上'
+            }
+          ]
           this.tableData = response.data.returnData
           // 排班列表不为空，说明该排班已创建，应当调取更新api
           if (this.tableData.length !== 0) {
