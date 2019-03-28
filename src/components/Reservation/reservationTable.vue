@@ -11,7 +11,7 @@
       <el-table-column prop="statusDescription" label="状态"/>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button size="mini" @click="callPatient(scope.$index, scope.row)">叫号</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -32,8 +32,13 @@ export default {
     return {}
   },
   methods: {
-    handleEdit(index, row) {
-      console.log(index, row)
+    callPatient(index, row) {
+      const obj = JSON.stringify(row)
+      localStorage.setItem('userReservation', obj)
+      localStorage.setItem('userReservationUuId', row.uuId)
+      this.$router.push({
+        name: 'DoctorClinic'
+      })
     },
     handleDelete(index, row) {
       console.log(index, row)

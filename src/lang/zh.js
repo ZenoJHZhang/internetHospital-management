@@ -18,6 +18,7 @@ export default {
     normalDepartmentSchdule: '普通科室排班管理',
     expertDepartmentSchedule: '专家科室排班管理',
     reservationList: '申请列表',
+    doctorClinic: '医生问诊',
     components: '组件',
     componentIndex: '介绍',
     tinymce: '富文本编辑器',
