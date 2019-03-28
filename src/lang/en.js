@@ -19,6 +19,7 @@ export default {
     expertDepartmentSchedule: 'ExpertDepartmentSchedule',
     reservationList: 'ReservationList',
     doctorClinic: 'DoctorClinic',
+    clinicResult: 'ClinicResult',
     components: 'Components',
     componentIndex: 'Introduction',
     tinymce: 'Tinymce',

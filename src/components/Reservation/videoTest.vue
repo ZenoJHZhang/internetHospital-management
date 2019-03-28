@@ -85,10 +85,8 @@ export default {
 <style scoped>
 .container {
   position: relative;
-  width: 80%;
-  padding: 0;
+  margin: 50px;
   height: 600px;
-  padding-left: 10%;
 }
 .bigVideo {
   width: 100%;

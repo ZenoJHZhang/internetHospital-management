@@ -214,8 +214,17 @@ export const asyncRouterMap = [{
     name: 'DoctorClinic',
     meta: {
       title: 'doctorClinic',
-      roles: ['superAdmin', 'doctor'],
-      icon: '申请列表'
+      roles: ['superAdmin', 'doctor']
+    },
+    hidden: true
+  },
+  {
+    component: () => import('@/views/reservationList/clinicResult'),
+    path: 'clinicResult',
+    name: 'ClinicResult',
+    meta: {
+      title: 'clinicResult',
+      roles: ['superAdmin', 'doctor']
     },
     hidden: true
   }
