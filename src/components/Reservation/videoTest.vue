@@ -25,7 +25,7 @@ export default {
   mounted() {
     this.$nextTick(function generate() {
       this.connectVideo()
-      this.predefinedRoomId = sessionStorage.getItem('userReservationUuId')
+      this.predefinedRoomId = localStorage.getItem('userReservationUuId')
       this.openOrJoinRoom()
     })
   },
