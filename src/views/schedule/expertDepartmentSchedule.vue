@@ -31,7 +31,7 @@
                   <el-table-column prop="timeInterval" label="时段" width="300"/>
                   <el-table-column prop="totalNumber" label="号源数" width="240">
                     <template slot-scope="scope">
-                      <el-input v-model="scope.row.totalNumber" type="number" step="1"/>
+                      <el-input v-model="scope.row.totalNumber" type="number" step="1" min="1"/>
                     </template>
                   </el-table-column>
                   <el-table-column label="操作">
@@ -66,7 +66,7 @@
                     </el-table-column>
                     <el-table-column prop="totalNumber" label="号源数" width="240">
                       <template slot-scope="scope">
-                        <el-input v-model="scope.row.totalNumber" type="number" step="1"/>
+                        <el-input v-model="scope.row.totalNumber" type="number" step="1" min="1"/>
                       </template>
                     </el-table-column>
                   </el-table>
