@@ -10,9 +10,11 @@ import getters from './getters'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  state:{
+  state: {
     errorTokenVisible: false,
     errorTokenMessage: '',
+    hasDiagnoseFlag: false,
+    hasMedicalFlag: false
   },
   modules: {
     app,

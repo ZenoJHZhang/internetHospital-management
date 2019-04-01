@@ -32,7 +32,15 @@ export default {
       // 初始化图片数组的方法，把要加载的图片装入
       const obj = localStorage.getItem('userReservation')
       const userReservation = JSON.parse(obj)
-      const arr = userReservation.imgPathList
+      // 初始化图片数组的方法，把要加载的图片装入
+      const arr = [
+
+      ]
+      userReservation.imgPathList.forEach(e => {
+        const value = { src: '' }
+        value.src = e
+        arr.push(value)
+      })
       return arr
     },
     clickFn(event, { index, value }) {

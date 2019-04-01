@@ -60,12 +60,12 @@
             病情图片：
             <span style="color: #fe9e20;">（点击查看大图）</span>
           </label>
-          <user-reservation-img-water-fall v-if="userReservation.imgPathList.length !== 0"/>
+          <user-reservation-img-water-fall v-if="userReservation.imgPathList.length !== null"/>
         </div>
       </div>
     </div>
     <no-comment
-      v-if="userReservation.imgPathList.length === 0"
+      v-if="userReservation.imgPathList.length === null"
       style="margin-top:50px;margin-bottom:150px;text-align:center"
       title="暂无图片"
     />
@@ -74,9 +74,11 @@
 
 <script>
 import noComment from '@/components/common/noComment'
+import userReservationImgWaterFall from '@/components/Reservation/userReservationImgWaterFall'
 export default {
   components: {
-    noComment
+    noComment,
+    userReservationImgWaterFall
   },
   data() {
     return {

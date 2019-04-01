@@ -213,12 +213,14 @@ export default {
       getRecipeDetailListByUserReservationUuid(userReservationUuid).then(
         response => {
           if (response.data.returnCode === 200) {
-            if (response.data.returnData.length !== 0) {
+            if (response.data.returnData !== null) {
               this.recipeInsertFlag = true
+              this.$store.state.hasMedicalFlag = true
               this.tableData = response.data.returnData
             } else {
               this.recipeInsertFlag = false
               this.tableData = []
+              this.$store.state.hasMedicalFlag = false
             }
           }
         }

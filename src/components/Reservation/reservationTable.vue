@@ -11,8 +11,8 @@
       <el-table-column prop="statusDescription" label="状态"/>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" @click="callPatient(scope.$index, scope.row)">叫号</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button v-if="oneButtonFlag" size="mini" @click="handleClick(scope.$index, scope.row)">{{ buttonName }}</el-button>
+          <el-button size="mini" @click="handleDelete(scope.$index, scope.row)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -29,15 +29,60 @@ export default {
       default: () => [],
       required: true,
       code: 0
+    },
+    status: {
+      type: Number,
+      default: 0
     }
   },
   data() {
-    return {}
+    return {
+      buttonName: '',
+      oneButtonFlag: false
+    }
   },
   created() {
-    this.connect()
+    if (this.status === 4) {
+      this.connect()
+    }
+  },
+  mounted() {
+    this.$nextTick(function init() {
+      if (this.status === 4) {
+        this.buttonName = '叫号'
+        this.oneButtonFlag = true
+      } else if (this.status === 11) {
+        this.buttonName = '视频问诊'
+        this.oneButtonFlag = true
+      } else if (this.status === 12) {
+        this.buttonName = '诊断和开药'
+        this.oneButtonFlag = true
+      } else if (this.status === 13) {
+        this.buttonName = '查看'
+        this.oneButtonFlag = false
+      }
+    })
   },
   methods: {
+    handleClick(index, row) {
+      if (this.status === 4) {
+        this.callPatient(index, row)
+      } else if (this.status === 11) {
+        const obj = JSON.stringify(row)
+        localStorage.setItem('userReservation', obj)
+        localStorage.setItem('userReservationUuId', row.uuId)
+        this.$router.push({
+          name: 'DoctorClinic'
+        })
+      } else if (this.status === 12) {
+        const obj = JSON.stringify(row)
+        localStorage.setItem('userReservation', obj)
+        localStorage.setItem('userReservationUuId', row.uuId)
+        this.$router.push({
+          name: 'ClinicResult'
+        })
+      }
+    },
     callPatient(index, row) {
       const obj = JSON.stringify(row)
       const value = {
@@ -51,7 +96,7 @@ export default {
         this.$router.push({
           name: 'DoctorClinic'
         })
-      } else {
+      } else if (this.code === 1) {
         this.$store.state.errorTokenVisible = true
         this.$store.state.errorTokenMessage = '叫号失败'
       }

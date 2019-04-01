@@ -23,13 +23,19 @@
     <el-main style="padding:50px;padding-top:20px">
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
         <el-tab-pane label="待就诊(今日)" name="待就诊(今日)">
-          <reservation-table :reservation-data="reservationData"/>
+          <reservation-table :reservation-data="reservationData" :status="4"/>
         </el-tab-pane>
         <el-tab-pane label="待就诊(其他)" name="待就诊(其他)" lazy>
           <reservation-table :reservation-data="reservationData"/>
         </el-tab-pane>
+        <el-tab-pane label="就诊中" name="就诊中" lazy>
+          <reservation-table :reservation-data="reservationData" :status="11"/>
+        </el-tab-pane>
+        <el-tab-pane label="待诊断" name="待诊断" lazy>
+          <reservation-table :reservation-data="reservationData" :status="12"/>
+        </el-tab-pane>
         <el-tab-pane label="待审核" name="待审核" lazy>
-          <reservation-table :reservation-data="reservationData"/>
+          <reservation-table :reservation-data="reservationData" :status="13"/>
         </el-tab-pane>
         <el-tab-pane label="已结束" name="已结束" lazy>
           <reservation-table :reservation-data="reservationData"/>
@@ -67,13 +73,13 @@ export default {
   },
   mounted() {
     this.$nextTick(function init() {
-      this.todayUserReservation()
+      this.todayUserReservation(4)
     })
   },
   methods: {
-    todayUserReservation() {
+    todayUserReservation(status) {
       const today = dateUtil.getDay(0, '-')
-      this.status = 4
+      this.status = status
       getUserReservationOfDoctor(
         this.status,
         today,
@@ -91,7 +97,13 @@ export default {
     },
     handleClick(tab, event) {
       if (tab.name === '待就诊(今日)') {
-        this.todayUserReservation()
+        this.todayUserReservation(4)
+      } else if (tab.name === '就诊中') {
+        this.todayUserReservation(11)
+      } else if (tab.name === '待诊断') {
+        this.todayUserReservation(12)
+      } else if (tab.name === '待审核') {
+        this.todayUserReservation(13)
       }
     }
   }

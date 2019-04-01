@@ -80,7 +80,8 @@ export default new Router({
   scrollBehavior: () => ({
     y: 0
   }),
-  routes: constantRouterMap
+  routes: constantRouterMap,
+  mode: 'history'
 })
 
 export const asyncRouterMap = [{

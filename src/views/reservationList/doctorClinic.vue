@@ -23,6 +23,7 @@
 import videoTest from '@/components/Reservation/videoTest'
 import noComment from '@/components/common/noComment'
 import userReservationDetail from '@/components/Reservation/userReservationDetail'
+import { beginOrFinishClinic } from '@/api/reservation'
 export default {
   components: {
     videoTest,
@@ -35,14 +36,19 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(function generate() {
-    })
+    this.$nextTick(function generate() {})
   },
   methods: {
     endClinic() {
-      this.$router.push({
-        name: 'ClinicResult'
-      })
+      beginOrFinishClinic(localStorage.getItem('userReservationUuId'), 1).then(
+        response => {
+          if (response.data.returnCode === 200) {
+            this.$router.push({
+              name: 'ClinicResult'
+            })
+          }
+        }
+      )
     }
   }
 }

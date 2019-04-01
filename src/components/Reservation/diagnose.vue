@@ -105,6 +105,7 @@ export default {
             if (response.data.returnCode === 200) {
               this.$store.state.errorTokenVisible = true
               this.$store.state.errorTokenMessage = '诊断填写成功'
+              this.getDiagnoseByUserReservationUuId()
             }
           })
         } else {
@@ -120,14 +121,13 @@ export default {
         localStorage.getItem('userReservationUuId')
       ).then(response => {
         if (response.data.returnCode === 200) {
-          if (
-            response.data.returnData.userReservationUuId ===
-            localStorage.getItem('userReservationUuId')
-          ) {
+          if (response.data.returnData !== null) {
             this.hasDiagnoseFlag = true
+            this.$store.state.hasDiagnoseFlag = true
             this.diagnose = response.data.returnData
           } else {
             this.hasDiagnoseFlag = false
+            this.$store.state.hasDiagnoseFlag = false
             this.diagnose = []
           }
         }
