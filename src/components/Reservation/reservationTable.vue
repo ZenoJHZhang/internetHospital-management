@@ -1,18 +1,24 @@
 <template>
   <div>
     <el-table :data="reservationData" stripe style="width: 100%">
-      <el-table-column prop="patientName" label="患者姓名" width="180"/>
-      <el-table-column prop="patientSex" label="性别" width="180"/>
-      <el-table-column prop="patient.age" label="年龄"/>
+      <el-table-column prop="patientName" label="患者姓名" width="120"/>
+      <el-table-column prop="patientSex" label="性别" width="80"/>
+      <el-table-column prop="patient.age" label="年龄" width="80"/>
+      <el-table-column prop="regNo" label="就诊序号" width="80"/>
       <el-table-column prop="departmentName" label="预约科室"/>
       <el-table-column prop="clinicDate" label="预约日期"/>
       <el-table-column prop="clinicTime" label="预约时段"/>
-      <el-table-column prop="regNo" label="就诊序号"/>
       <el-table-column prop="statusDescription" label="状态"/>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="300">
         <template slot-scope="scope">
-          <el-button v-if="oneButtonFlag" size="mini" @click="handleClick(scope.$index, scope.row)">{{ buttonName }}</el-button>
+          <el-button
+            v-if="oneButtonFlag"
+            size="mini"
+            type="primary"
+            @click="handleClick(scope.$index, scope.row)"
+          >{{ buttonName }}</el-button>
           <el-button size="mini" @click="handleDelete(scope.$index, scope.row)">查看</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">过号</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -85,12 +91,14 @@ export default {
     },
     callPatient(index, row) {
       const obj = JSON.stringify(row)
+      var doctorCallRegNo = row.regNo
       const value = {
         userReservationUuId: row.uuId,
-        token: localStorage.getItem('token')
+        token: localStorage.getItem('token'),
+        doctorCallRegNo: doctorCallRegNo
       }
       this.stompClient.send('/doc/pushClinicState', {}, JSON.stringify(value))
-      if (this.code === 0) {
+      if (this.code === 0 && this.clinicState != null && this.clinicState === 0) {
         localStorage.setItem('userReservation', obj)
         localStorage.setItem('userReservationUuId', row.uuId)
         this.$router.push({
@@ -98,7 +106,7 @@ export default {
         })
       } else if (this.code === 1) {
         this.$store.state.errorTokenVisible = true
-        this.$store.state.errorTokenMessage = '叫号失败'
+        this.$store.state.errorTokenMessage = this.message
       }
     },
     handleDelete(index, row) {
@@ -119,6 +127,7 @@ export default {
             msg => {
               const o = JSON.parse(msg.body)
               this.code = o.code
+              this.message = o.message
             },
             {}
           )

@@ -35,3 +35,35 @@ export function confirmDoctorReservation(userReservationUuid) {
     }
   })
 }
+
+export function getAllDetailByUuId(userReservationUuId) {
+  return request({
+    url: '/userReservation/getAllDetailByUuId',
+    method: 'post',
+    params: {
+      userReservationUuId
+    }
+  })
+}
+
+export function getUserReservationByStatus(userReservationStatus) {
+  return request({
+    url: '/managementUserReservation/getUserReservationByStatus',
+    method: 'post',
+    params: {
+      userReservationStatus
+    }
+  })
+}
+
+export function auditUserReservation(userReservationUuId, auditStatus, examineFailReason) {
+  return request({
+    url: '/managementUserReservation/auditUserReservation',
+    method: 'post',
+    params: {
+      userReservationUuId,
+      auditStatus,
+      examineFailReason
+    }
+  })
+}

@@ -71,14 +71,14 @@
           @click="insertTableVisable=true"
         >新增排班</el-button>
         <el-table :data="tableData" stripe style="width:760px;margin-top:50px">
-          <el-table-column prop="timeInterval" label="时段" width="300"/>
-          <el-table-column prop="totalNumber" label="号源数" width="240">
+          <el-table-column prop="timeInterval" label="时段" width="150"/>
+          <el-table-column prop="totalNumber" label="号源数" width="200">
             <template slot-scope="scope">
               <el-input v-model="scope.row.totalNumber" type="number" step="1" min="1"/>
             </template>
           </el-table-column>
           <el-table-column label="操作">
-            <template slot-scope="scope" width="160">
+            <template slot-scope="scope" >
               <el-button
                 size="mini"
                 type="success"

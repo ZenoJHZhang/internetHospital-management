@@ -21,6 +21,7 @@ export default {
     doctorClinic: 'DoctorClinic',
     clinicResult: 'ClinicResult',
     preview: 'Preview',
+    auditRecipe: 'AuditRecipe',
     components: 'Components',
     componentIndex: 'Introduction',
     tinymce: 'Tinymce',

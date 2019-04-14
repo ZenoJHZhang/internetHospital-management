@@ -29,8 +29,8 @@
       </el-header>
       <el-main>
         <el-row>
-          <el-col v-for="(department,index) in departmentList" :span="6" :key="index">
-            <el-card :body-style="{ padding: '0px', height:'360px',}" shadow="hover">
+          <el-col v-for="(department,index) in departmentList" :span="6" :key="index" >
+            <el-card :body-style="{ padding: '0px', height:'360px'}" shadow="hover">
               <div slot="header">
                 <span style="font-weight:700;font-size:18px">{{ department.departmentName }}</span>
                 <el-button
@@ -120,9 +120,9 @@
 
 <style>
 .el-col {
-  border-radius: 4px;
+  border-radius: 8px;
   padding-bottom: 20px;
-  padding-left: 30px;
+  padding-left:30px
 }
 .name {
   font-weight: 700;

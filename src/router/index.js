@@ -232,6 +232,23 @@ export const asyncRouterMap = [{
   ]
 },
 {
+  path: '/auditRecipe',
+  component: Layout,
+  meta: {
+    roles: ['superAdmin', 'doctorAdmin']
+  },
+  children: [{
+    component: () => import('@/views/auditRecipe/index'),
+    path: 'index',
+    name: 'AuditRecipe',
+    meta: {
+      title: 'auditRecipe',
+      roles: ['superAdmin', 'doctorAdmin'],
+      icon: '药方'
+    }
+  }]
+},
+{
   path: '*',
   redirect: '/404',
   hidden: true
