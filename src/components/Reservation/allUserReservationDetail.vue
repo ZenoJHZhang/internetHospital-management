@@ -45,8 +45,12 @@
         </div>
         <div class="lineClass">
           <div class="detailClass">
-            <label style="color:black">费用：</label>
+            <label style="color:black">挂号费：</label>
             <span style="color: #fe9e20;">￥{{ userReservation.clinicPrice }}</span>
+          </div>
+          <div class="detailClass">
+            <label style="color:black">处方费：</label>
+            <span style="color: #fe9e20;">￥{{ userReservation.recipePrice }}</span>
           </div>
         </div>
         <div v-if="!auditFlag" class="lineClass">
@@ -124,7 +128,11 @@
     <div class="title-line">
       处方详情
       <span>
-        <el-button type="text" style="float:right;margin-right:20%" @click="recipeFlag = !recipeFlag">{{ recipeFlag == true ?'收起':'展开' }}</el-button>
+        <el-button
+          type="text"
+          style="float:right;margin-right:20%"
+          @click="recipeFlag = !recipeFlag"
+        >{{ recipeFlag == true ?'收起':'展开' }}</el-button>
       </span>
     </div>
     <div v-if="recipeFlag">
@@ -158,20 +166,31 @@ export default {
       default: function() {
         return true
       }
+    },
+    userReservationUuId: {
+      type: String,
+      default: function() {
+        return ''
+      }
     }
   },
   data() {
     return {
       userReservation: [],
-      userReservationUuId: '',
       firstTitle: '',
       diagnoseFlag: false,
       recipeFlag: true
     }
   },
+  watch: {
+    userReservationUuId(newVar, oldVar) {
+      if (newVar !== oldVar) {
+        this.getAllDetailByUuId()
+      }
+    }
+  },
   mounted() {
     this.$nextTick(function generate() {
-      this.userReservationUuId = localStorage.getItem('userReservationUuId')
       if (this.auditFlag) {
         this.firstTitle = '患者信息'
       } else {

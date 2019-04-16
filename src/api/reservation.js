@@ -46,12 +46,14 @@ export function getAllDetailByUuId(userReservationUuId) {
   })
 }
 
-export function getUserReservationByStatus(userReservationStatus) {
+export function getUserReservationByAuditStatus(auditStatus, pageNo, pageSize) {
   return request({
-    url: '/managementUserReservation/getUserReservationByStatus',
+    url: '/managementUserReservation/getUserReservationByAuditStatus',
     method: 'post',
     params: {
-      userReservationStatus
+      auditStatus,
+      pageNo,
+      pageSize
     }
   })
 }
