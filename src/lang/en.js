@@ -20,6 +20,7 @@ export default {
     reservationList: 'ReservationList',
     doctorClinic: 'DoctorClinic',
     clinicResult: 'ClinicResult',
+    reservationDetail: 'ReservationDetail',
     preview: 'Preview',
     auditRecipe: 'AuditRecipe',
     components: 'Components',

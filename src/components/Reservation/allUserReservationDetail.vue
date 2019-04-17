@@ -10,17 +10,17 @@
           </div>
           <div class="detailClass">
             <label style="color:black">性别：</label>
-            <span>{{ userReservation.patient.sex == 1?'男':'女' }}</span>
+            <span>{{ patient.sex == 1?'男':'女' }}</span>
           </div>
           <div class="detailClass">
             <label style="color:black">年龄：</label>
-            <span>{{ userReservation.patient.age }}</span>
+            <span>{{ patient.age }}</span>
           </div>
         </div>
         <div v-if="!auditFlag" class="lineClass">
           <div>
             <label style="color:black">身份证号：</label>
-            <span>{{ userReservation.patient.idCard }}</span>
+            <span>{{ patient.idCard }}</span>
           </div>
         </div>
         <div v-if="!auditFlag" class="lineClass">
@@ -48,7 +48,7 @@
             <label style="color:black">挂号费：</label>
             <span style="color: #fe9e20;">￥{{ userReservation.clinicPrice }}</span>
           </div>
-          <div class="detailClass">
+          <div v-if="recipeFlag" class="detailClass">
             <label style="color:black">处方费：</label>
             <span style="color: #fe9e20;">￥{{ userReservation.recipePrice }}</span>
           </div>
@@ -59,34 +59,36 @@
             <span>{{ userReservation.conditionDesc }}</span>
           </div>
         </div>
-        <div v-if="!auditFlag" class="lineClass">
-          <div>
-            <label style="color:black">
-              病情图片：
-              <span style="color: #fe9e20;">（点击查看大图）</span>
-            </label>
-            <user-reservation-img-water-fall v-if="userReservation.imgPathList.length !== null"/>
+        <div v-if="!auditFlag">
+          <div class="lineClass">
+            <div>
+              <label style="color:black">
+                病情图片：
+                <span style="color: #fe9e20;">（点击查看大图）</span>
+              </label>
+              <user-reservation-img-water-fall v-if="imgPathList.length !== 0"/>
+            </div>
           </div>
         </div>
+        <no-comment
+          v-if="imgPathList.length === 0"
+          style="margin-top:50px;margin-bottom:150px;text-align:center"
+          title="暂无图片"
+        />
       </div>
-      <no-comment
-        v-if="userReservation.imgPathList.length === null"
-        style="margin-top:50px;margin-bottom:150px;text-align:center"
-        title="暂无图片"
-      />
     </div>
-    <div>
-      <div class="title-line">
-        诊断详情
-        <span>
-          <el-button
-            type="text"
-            style="float:right;margin-right:20%"
-            @click="diagnoseFlag = !diagnoseFlag"
-          >{{ diagnoseFlag == true ?'收起':'展开' }}</el-button>
-        </span>
-      </div>
-      <div v-if="diagnoseFlag" class="reservationStyle">
+    <div class="title-line">
+      诊断详情
+      <span v-if="diagnoseFlag">
+        <el-button
+          type="text"
+          style="float:right;margin-right:20%"
+          @click="diagnoseVisableFlag = !diagnoseVisableFlag"
+        >{{ diagnoseVisableFlag == true ?'收起':'展开' }}</el-button>
+      </span>
+    </div>
+    <div v-if="diagnoseFlag">
+      <div v-if="diagnoseVisableFlag" class="reservationStyle">
         <div class="lineClass">
           <div class="detailClass">
             <label style="color:black">主诉：</label>
@@ -125,28 +127,35 @@
         </div>
       </div>
     </div>
-    <div class="title-line">
-      处方详情
-      <span>
-        <el-button
-          type="text"
-          style="float:right;margin-right:20%"
-          @click="recipeFlag = !recipeFlag"
-        >{{ recipeFlag == true ?'收起':'展开' }}</el-button>
-      </span>
-    </div>
-    <div v-if="recipeFlag">
-      <el-table :data="userReservation.medicalList" style="width: 100%">
-        <el-table-column prop="name" label="药品名称"/>
-        <el-table-column prop="unit" label="规格" width="50"/>
-        <el-table-column prop="type" label="类型" width="50"/>
-        <el-table-column prop="price" label="单价" width="50"/>
-        <el-table-column prop="amount" label="数量" width="50"/>
-        <el-table-column prop="dosageDetail" label="每次服用剂量" width="120"/>
-        <el-table-column prop="times" label="用药频次"/>
-        <el-table-column prop="day" label="天数" width="80"/>
-        <el-table-column prop="method" label="用法"/>
-      </el-table>
+    <div v-if="!diagnoseFlag" style="font-weight:700">暂无诊断意见</div>
+
+    <div style="margin-top:25px;margin-bottom:50px">
+      <div class="title-line">
+        处方详情
+        <span v-if="recipeFlag">
+          <el-button
+            type="text"
+            style="float:right;margin-right:20%"
+            @click="recipeVisableFlag = !recipeVisableFlag"
+          >{{ recipeVisableFlag == true ?'收起':'展开' }}</el-button>
+        </span>
+      </div>
+      <div v-if="recipeFlag">
+        <div v-if="recipeVisableFlag ">
+          <el-table :data="userReservation.medicalList" style="width: 100%">
+            <el-table-column prop="name" label="药品名称"/>
+            <el-table-column prop="unit" label="规格" width="50"/>
+            <el-table-column prop="type" label="类型" width="50"/>
+            <el-table-column prop="price" label="单价" width="50"/>
+            <el-table-column prop="amount" label="数量" width="50"/>
+            <el-table-column prop="dosageDetail" label="每次服用剂量" width="120"/>
+            <el-table-column prop="times" label="用药频次"/>
+            <el-table-column prop="day" label="天数" width="80"/>
+            <el-table-column prop="method" label="用法"/>
+          </el-table>
+        </div>
+      </div>
+      <div v-if="!recipeFlag" style="font-weight:700">暂无处方</div>
     </div>
   </div>
 </template>
@@ -176,10 +185,14 @@ export default {
   },
   data() {
     return {
-      userReservation: [],
+      userReservation: {},
       firstTitle: '',
+      diagnoseVisableFlag: false,
+      recipeVisableFlag: true,
+      recipeFlag: false,
       diagnoseFlag: false,
-      recipeFlag: true
+      imgPathList: [],
+      patient: {}
     }
   },
   watch: {
@@ -204,6 +217,24 @@ export default {
       getAllDetailByUuId(this.userReservationUuId).then(response => {
         if (response.data.returnCode === 200) {
           this.userReservation = response.data.returnData
+          localStorage.setItem(
+            'userReservation',
+            JSON.stringify(this.userReservation)
+          )
+          this.imgPathList = this.userReservation.imgPathList
+          this.patient = this.userReservation.patient
+          if (this.userReservation.diagnose !== null) {
+            this.diagnoseFlag = true
+          } else {
+            this.diagnoseFlag = false
+          }
+          if (this.userReservation.medicalList !== null) {
+            if (this.userReservation.medicalList.length !== 0) {
+              this.recipeFlag = true
+            }
+          } else {
+            this.recipeFlag = false
+          }
         }
       })
     }
@@ -235,7 +266,7 @@ export default {
   margin-left: 5%;
 }
 .lineClass {
-  margin-bottom: 50px;
+  margin-bottom: 25px;
 }
 .imgClass {
   height: 100%;

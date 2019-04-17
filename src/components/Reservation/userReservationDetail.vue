@@ -13,13 +13,13 @@
         </div>
         <div class="detailClass">
           <label style="color:black">年龄：</label>
-          <span>{{ userReservation.patient.age }}</span>
+          <span>{{ patient.age }}</span>
         </div>
       </div>
       <div class="lineClass">
         <div>
           <label style="color:black">身份证号：</label>
-          <span>{{ userReservation.patient.idCard }}</span>
+          <span>{{ patient.idCard }}</span>
         </div>
       </div>
       <div class="lineClass">
@@ -60,12 +60,12 @@
             病情图片：
             <span style="color: #fe9e20;">（点击查看大图）</span>
           </label>
-          <user-reservation-img-water-fall v-if="userReservation.imgPathList.length !== null"/>
+          <user-reservation-img-water-fall v-if="imgPathList.length !== 0"/>
         </div>
       </div>
     </div>
     <no-comment
-      v-if="userReservation.imgPathList.length === null"
+      v-if="imgPathList.length === 0"
       style="margin-top:50px;margin-bottom:150px;text-align:center"
       title="暂无图片"
     />
@@ -82,7 +82,9 @@ export default {
   },
   data() {
     return {
-      userReservation: []
+      userReservation: [],
+      patient: {},
+      imgPathList: []
     }
   },
   mounted() {
@@ -99,6 +101,8 @@ export default {
         })
       }
       this.userReservation = JSON.parse(obj)
+      this.patient = this.userReservation.patient
+      this.imgPathList = this.userReservation.imgPathList
     }
   }
 }
@@ -128,7 +132,7 @@ export default {
   margin-left: 5%;
 }
 .lineClass {
-  margin-bottom: 50px;
+  margin-bottom: 25px;
 }
 .imgClass {
   height: 100%;

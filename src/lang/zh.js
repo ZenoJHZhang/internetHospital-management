@@ -20,6 +20,7 @@ export default {
     reservationList: '申请列表',
     doctorClinic: '医生问诊',
     clinicResult: '问诊结果',
+    reservationDetail: '就诊详情',
     preview: '医嘱预览',
     auditRecipe: '审核药方',
     components: '组件',

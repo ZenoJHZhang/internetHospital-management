@@ -228,6 +228,16 @@ export const asyncRouterMap = [{
       roles: ['superAdmin', 'doctor']
     },
     hidden: true
+  },
+  {
+    component: () => import('@/views/reservationList/detail'),
+    path: 'reservationDetail',
+    name: 'ReservationDetail',
+    meta: {
+      title: 'reservationDetail',
+      roles: ['superAdmin', 'doctor']
+    },
+    hidden: true
   }
   ]
 },

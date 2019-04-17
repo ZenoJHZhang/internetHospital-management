@@ -17,8 +17,13 @@
             type="primary"
             @click="handleClick(scope.$index, scope.row)"
           >{{ buttonName }}</el-button>
-          <el-button size="mini" @click="handleDelete(scope.$index, scope.row)">查看</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">过号</el-button>
+          <el-button size="mini" @click="getDetail(scope.$index, scope.row)">查看</el-button>
+          <el-button
+            v-if="status === 4"
+            size="mini"
+            type="danger"
+            @click="forwardCall(scope.$index, scope.row)"
+          >过号</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -98,7 +103,11 @@ export default {
         doctorCallRegNo: doctorCallRegNo
       }
       this.stompClient.send('/doc/pushClinicState', {}, JSON.stringify(value))
-      if (this.code === 0 && this.clinicState != null && this.clinicState === 0) {
+      if (
+        this.code === 0 &&
+        this.clinicState != null &&
+        this.clinicState === 0
+      ) {
         localStorage.setItem('userReservation', obj)
         localStorage.setItem('userReservationUuId', row.uuId)
         this.$router.push({
@@ -109,8 +118,11 @@ export default {
         this.$store.state.errorTokenMessage = this.message
       }
     },
-    handleDelete(index, row) {
-      console.log(index, row)
+    getDetail(index, row) {
+      this.$router.push({
+        name: 'ReservationDetail',
+        query: { userReservationUuId: row.uuId }
+      })
     },
     connect() {
       const socket = new SockJS('https://localhost:8080/myWebSocket')

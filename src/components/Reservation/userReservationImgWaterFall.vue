@@ -1,7 +1,7 @@
 <template>
   <div id="content">
     <vue-waterfall-easy
-      :height="400"
+      :height="height"
       :max-cols="3"
       :gap="50"
       :img-width="200"
@@ -22,6 +22,11 @@ export default {
   data() {
     return {
       imgsArr: []
+    }
+  },
+  computed: {
+    height() {
+      return (parseInt((this.imgsArr.length) / 3) + 1) * 200
     }
   },
   mounted() {
