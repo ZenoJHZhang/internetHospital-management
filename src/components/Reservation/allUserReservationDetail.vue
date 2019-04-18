@@ -54,7 +54,7 @@
           </div>
         </div>
         <div v-if="!auditFlag" class="lineClass">
-          <div class="detailClass">
+          <div style="width:100%">
             <label style="color:black">疾病描述：</label>
             <span>{{ userReservation.conditionDesc }}</span>
           </div>

@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="lineClass">
-        <div class="detailClass">
+        <div style="width:100%">
           <label style="color:black">疾病描述：</label>
           <span>{{ userReservation.conditionDesc }}</span>
         </div>
@@ -132,7 +132,7 @@ export default {
   margin-left: 5%;
 }
 .lineClass {
-  margin-bottom: 25px;
+  margin-bottom: 50px;
 }
 .imgClass {
   height: 100%;

@@ -49,7 +49,10 @@ export default {
   data() {
     return {
       buttonName: '',
-      oneButtonFlag: false
+      oneButtonFlag: false,
+      code: 0,
+      message: '',
+      clinicState: 0
     }
   },
   created() {
@@ -77,7 +80,18 @@ export default {
   methods: {
     handleClick(index, row) {
       if (this.status === 4) {
-        this.callPatient(index, row)
+        var hour = new Date().getHours()
+        var clinicTime = row.clinicTime
+        var startTime = clinicTime.split('-')[0]
+        var endTime = clinicTime.split('-')[1]
+        var startHour = startTime.split(':')[0]
+        var endHour = endTime.split(':')[0]
+        if (startHour <= hour && hour <= endHour) {
+          this.callPatient(index, row)
+        } else {
+          this.$store.state.errorTokenVisible = true
+          this.$store.state.errorTokenMessage = '未到叫号时段'
+        }
       } else if (this.status === 11) {
         const obj = JSON.stringify(row)
         localStorage.setItem('userReservation', obj)
@@ -103,6 +117,7 @@ export default {
         doctorCallRegNo: doctorCallRegNo
       }
       this.stompClient.send('/doc/pushClinicState', {}, JSON.stringify(value))
+      console.log(this.code)
       if (
         this.code === 0 &&
         this.clinicState != null &&
@@ -125,7 +140,7 @@ export default {
       })
     },
     connect() {
-      const socket = new SockJS('https://localhost:8080/myWebSocket')
+      const socket = new SockJS('https://localhost:8082/myWebSocket')
       // let socket = new SockJS("https://www.woniuyiliao.cn/api/myWebSocket");
       const headers = {
         Authorization: localStorage.getItem('token')
