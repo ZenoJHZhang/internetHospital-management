@@ -71,7 +71,12 @@ export default {
       } else if (this.status === 12) {
         this.buttonName = '诊断和开药'
         this.oneButtonFlag = true
-      } else if (this.status === 13) {
+      } else if (
+        this.status === 13 ||
+        this.status === 14 ||
+        this.status === 17 ||
+        this.status === 18
+      ) {
         this.buttonName = '查看'
         this.oneButtonFlag = false
       }
@@ -117,21 +122,8 @@ export default {
         doctorCallRegNo: doctorCallRegNo
       }
       this.stompClient.send('/doc/pushClinicState', {}, JSON.stringify(value))
-      console.log(this.code)
-      if (
-        this.code === 0 &&
-        this.clinicState != null &&
-        this.clinicState === 0
-      ) {
-        localStorage.setItem('userReservation', obj)
-        localStorage.setItem('userReservationUuId', row.uuId)
-        this.$router.push({
-          name: 'DoctorClinic'
-        })
-      } else if (this.code === 1) {
-        this.$store.state.errorTokenVisible = true
-        this.$store.state.errorTokenMessage = this.message
-      }
+      localStorage.setItem('userReservation', obj)
+      localStorage.setItem('userReservationUuId', row.uuId)
     },
     getDetail(index, row) {
       this.$router.push({
@@ -140,8 +132,8 @@ export default {
       })
     },
     connect() {
-      const socket = new SockJS('https://localhost:8082/myWebSocket')
-      // let socket = new SockJS("https://www.woniuyiliao.cn/api/myWebSocket");
+      // const socket = new SockJS("https://localhost:8080/myWebSocket");
+      const socket = new SockJS('https://management.woniuyiliao.cn/api/myWebSocket')
       const headers = {
         Authorization: localStorage.getItem('token')
       }
@@ -155,6 +147,18 @@ export default {
               const o = JSON.parse(msg.body)
               this.code = o.code
               this.message = o.message
+              if (
+                this.code === 0 &&
+                this.clinicState != null &&
+                this.clinicState === 0
+              ) {
+                this.$router.push({
+                  name: 'DoctorClinic'
+                })
+              } else if (this.code === 1) {
+                this.$store.state.errorTokenVisible = true
+                this.$store.state.errorTokenMessage = this.message
+              }
             },
             {}
           )

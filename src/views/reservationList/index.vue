@@ -43,7 +43,10 @@
           <el-tab-pane label="待审核" name="待审核" lazy>
             <reservation-table :reservation-data="reservationData" :status="13"/>
           </el-tab-pane>
-          <el-tab-pane label="已审核待评价" name="已审核待评价" lazy>
+          <el-tab-pane label="已审核" name="已审核" lazy>
+            <reservation-table :reservation-data="reservationData"/>
+          </el-tab-pane>
+          <el-tab-pane label="待评价" name="待评价" lazy>
             <reservation-table :reservation-data="reservationData"/>
           </el-tab-pane>
           <el-tab-pane label="已评价" name="已评价" lazy>
@@ -135,6 +138,12 @@ export default {
         this.todayUserReservation(12, false)
       } else if (tab.name === '待审核') {
         this.todayUserReservation(13, false)
+      } else if (tab.name === '已审核') {
+        this.todayUserReservation(14, false)
+      } else if (tab.name === '待评价') {
+        this.todayUserReservation(17, false)
+      } else if (tab.name === '已评价') {
+        this.todayUserReservation(18, false)
       }
     }
   }

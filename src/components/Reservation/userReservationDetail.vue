@@ -66,7 +66,7 @@
     </div>
     <no-comment
       v-if="imgPathList.length === 0"
-      style="margin-top:50px;margin-bottom:150px;text-align:center"
+      style="margin-top:50px;text-align:center"
       title="暂无图片"
     />
   </div>

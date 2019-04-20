@@ -18,20 +18,19 @@
       </el-autocomplete>
     </el-header>
     <el-main>
-      <div/>
-      <el-table :data="tableData" style="width:100%" stripe>
+      <el-table v-if="!recipeInsertFlag" :data="tableData" style="width:100%" stripe>
         <el-table-column prop="name" label="药品名称" width="200px"/>
-        <el-table-column v-if="!recipeInsertFlag" label="剂量" width="100px">
+        <el-table-column label="剂量" width="100px">
           <template slot-scope="scope">
             <el-input v-model="scope.row.dosage" size="mini" type="number" min="0"/>
           </template>
         </el-table-column>
-        <el-table-column v-if="!recipeInsertFlag" label="剂量单位" width="80px">
+        <el-table-column label="剂量单位" width="80px">
           <template slot-scope="scope">
             <el-input v-model="scope.row.dosageUnit" size="mini"/>
           </template>
         </el-table-column>
-        <el-table-column v-if="!recipeInsertFlag" label="用药频次" width="150px">
+        <el-table-column label="用药频次" width="150px">
           <template slot-scope="scope">
             <el-select v-model="scope.row.times" placeholder="请选择">
               <el-option
@@ -43,12 +42,12 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column v-if="!recipeInsertFlag" label="天数" width="80px">
+        <el-table-column label="天数" width="80px">
           <template slot-scope="scope">
             <el-input v-model="scope.row.day" size="mini" type="number" step="1" min="1"/>
           </template>
         </el-table-column>
-        <el-table-column v-if="!recipeInsertFlag" prop label="用法">
+        <el-table-column prop label="用法">
           <template slot-scope="scope">
             <el-select v-model="scope.row.method" placeholder="请选择">
               <el-option
@@ -60,25 +59,27 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column v-if="!recipeInsertFlag" label="药品数量">
+        <el-table-column label="药品数量">
           <template slot-scope="scope">
             <el-input v-model="scope.row.amount" size="mini" type="number" step="1" min="1"/>
           </template>
         </el-table-column>
-
-        <el-table-column v-if="recipeInsertFlag" label="药品数量" prop="amount"/>
-        <el-table-column v-if="recipeInsertFlag" label="用法" prop="method"/>
-        <el-table-column v-if="recipeInsertFlag" label="天数" width="80px" prop="day"/>
-        <el-table-column v-if="recipeInsertFlag" label="用药频次" width="150px" prop="times"/>
-        <el-table-column v-if="recipeInsertFlag" label="剂量单位" width="80px" prop="dosageUnit"/>
-        <el-table-column v-if="recipeInsertFlag" label="剂量" width="100px" prop="dosage"/>
-
         <el-table-column prop="price" label="单价"/>
-        <el-table-column v-if="!recipeInsertFlag" label="操作">
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
+      </el-table>
+
+      <el-table v-if="recipeInsertFlag" :data="tableData" style="width:100%" stripe>
+        <el-table-column prop="name" label="药品名称" width="200px"/>
+        <el-table-column label="剂量" width="100px" prop="dosage"/>
+        <el-table-column label="剂量单位" width="80px" prop="dosageUnit"/>
+        <el-table-column label="用药频次" width="150px" prop="times"/>
+        <el-table-column label="天数" width="80px" prop="day"/>
+        <el-table-column prop="method" label="用法"/>
+        <el-table-column label="药品数量" prop="amount"/>
       </el-table>
     </el-main>
     <el-footer style="text-align:center">
@@ -189,7 +190,7 @@ export default {
           if (response.data.returnCode === 200) {
             this.$store.state.errorTokenVisible = true
             this.$store.state.errorTokenMessage = '处方信息添加成功'
-            this.recipeInsertFlag = true
+            this.getInsertRecipe()
           }
         })
       }

@@ -1,5 +1,5 @@
 module.exports = {
   NODE_ENV: '"production"',
   ENV_CONFIG: '"prod"',
-  BASE_API: '"https://www.woniuyiliao.cn/api"'
+  BASE_API: '"https://management.woniuyiliao.cn/api"'
 }
