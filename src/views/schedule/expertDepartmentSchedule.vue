@@ -10,6 +10,7 @@
           type="date"
           placeholder="选择日期"
           value-format="yyyy-MM-dd"
+          @change="listExpert"
         />
         <div>
           <el-card v-if="noDoctor" class="box-card" shadow="hover" style="margin-top:30px">暂无医生</el-card>
