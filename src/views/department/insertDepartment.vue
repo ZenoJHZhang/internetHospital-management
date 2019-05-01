@@ -56,10 +56,7 @@
 </template>
 
 <script>
-import {
-  insertDepartment,
-  insertDepartmentImg
-} from '@/api/department'
+import { insertDepartment, insertDepartmentImg } from '@/api/department'
 import 'babel-polyfill' // es6 shim
 import myUpload from 'vue-image-crop-upload'
 export default {
@@ -120,11 +117,17 @@ export default {
           if (!this.changeImgFlag) {
             this.departmentForm.imgId = 1
           }
+          var obj = {
+            imgStr: ''
+          }
+          if (this.changeImgFlag) {
+            this.$set(obj, 'imgStr', this.imgDataUrl)
+          }
           insertDepartment(this.departmentForm).then(response => {
             if (response.data.returnCode === 200) {
               if (this.changeImgFlag) {
                 insertDepartmentImg(
-                  this.imgDataUrl,
+                  obj,
                   response.data.returnData
                 ).then(response => {
                   if (response.data.returnCode === 200) {

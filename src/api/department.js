@@ -35,8 +35,8 @@ export function insertDepartmentImg(imgStr, departmentId) {
   return request({
     url: '/img/insertDepartmentImg',
     method: 'post',
+    data: imgStr,
     params: {
-      imgStr,
       departmentId
     }
   })

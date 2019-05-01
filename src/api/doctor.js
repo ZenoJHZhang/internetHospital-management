@@ -53,8 +53,8 @@ export function insertDoctorImg(imgStr, doctorId) {
   return request({
     url: '/img/insertDoctorImg',
     method: 'post',
+    data: imgStr,
     params: {
-      imgStr,
       doctorId
     }
   })

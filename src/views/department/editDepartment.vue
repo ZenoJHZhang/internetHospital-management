@@ -119,21 +119,28 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          var obj = {
+            imgStr: ''
+          }
+          if (this.changeImgFlag) {
+            this.$set(obj, 'imgStr', this.imgDataUrl)
+          }
           updateDepartment(this.departmentForm).then(response => {
             if (response.data.returnCode === 200) {
               if (this.changeImgFlag) {
-                insertDepartmentImg(
-                  this.imgDataUrl,
-                  response.data.returnData
-                ).then(response => {
-                  if (response.data.returnCode === 200) {
-                    this.$store.state.errorTokenVisible = true
-                    this.$store.state.errorTokenMessage = '更新科室成功！'
+                insertDepartmentImg(obj, response.data.returnData).then(
+                  response => {
+                    if (response.data.returnCode === 200) {
+                      this.$store.state.errorTokenVisible = true
+                      this.$store.state.errorTokenMessage = '更新科室成功！'
+                      this.$router.go(-1)
+                    }
                   }
-                })
+                )
               } else {
                 this.$store.state.errorTokenVisible = true
                 this.$store.state.errorTokenMessage = '更新科室成功！'
+                this.$router.go(-1)
               }
             }
           })

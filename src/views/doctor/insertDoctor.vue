@@ -248,10 +248,16 @@ export default {
             this.doctorForm.imgId = 2
           }
           this.doctorForm.departmentList = this.doctorDepartmentList
+          var obj = {
+            imgStr: ''
+          }
+          if (this.changeImgFlag) {
+            this.$set(obj, 'imgStr', this.imgDataUrl)
+          }
           insertDoctor(this.doctorForm).then(response => {
             if (response.data.returnCode === 200) {
               if (this.changeImgFlag) {
-                insertDoctorImg(this.imgDataUrl, response.data.returnData).then(
+                insertDoctorImg(obj, response.data.returnData).then(
                   response => {
                     if (response.data.returnCode === 200) {
                       this.$store.state.errorTokenVisible = true
