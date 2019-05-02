@@ -14,7 +14,8 @@ const store = new Vuex.Store({
     errorTokenVisible: false,
     errorTokenMessage: '',
     hasDiagnoseFlag: false,
-    hasMedicalFlag: false
+    hasMedicalFlag: false,
+    activeName: 'diagnose'
   },
   modules: {
     app,

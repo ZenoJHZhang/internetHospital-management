@@ -69,3 +69,14 @@ export function auditUserReservation(userReservationUuId, auditStatus, examineFa
     }
   })
 }
+
+export function passUserReservation(userReservationUuid, passReason) {
+  return request({
+    url: '/docUserReservation/passUserReservation',
+    method: 'post',
+    params: {
+      userReservationUuid,
+      passReason
+    }
+  })
+}

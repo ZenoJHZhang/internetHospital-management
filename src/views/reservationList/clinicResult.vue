@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-aside width="60%" style="padding:20px">
-      <el-tabs v-model="activeName">
+      <el-tabs v-model="$store.state.activeName">
         <el-tab-pane label="病情诊断" name="diagnose">
           <diagnose/>
         </el-tab-pane>
@@ -35,15 +35,36 @@ export default {
   },
   data() {
     return {
-      userReservation: [],
-      activeName: 'diagnose'
+      userReservation: []
     }
   },
   mounted() {
     this.$nextTick(function generate() {
+      this.changeTab()
     })
   },
-  methods: {}
+  methods: {
+    changeTab() {
+      if (
+        this.$store.state.hasDiagnoseFlag &&
+        !this.$store.state.hasMedicalFlag
+      ) {
+        this.$store.state.activeName = 'giveMedical'
+      } else if (
+        !this.$store.state.hasDiagnoseFlag &&
+        this.$store.state.hasMedicalFlag
+      ) {
+        this.$store.state.activeName = 'diagnose'
+      } else if (
+        this.$store.state.hasDiagnoseFlag &&
+        this.$store.state.hasMedicalFlag
+      ) {
+        this.$store.state.activeName = 'preview'
+      } else {
+        this.$store.state.activeName = 'diagnose'
+      }
+    }
+  }
 }
 </script>
 

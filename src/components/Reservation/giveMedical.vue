@@ -18,14 +18,20 @@
       </el-autocomplete>
     </el-header>
     <el-main>
-      <el-table v-if="!recipeInsertFlag" :data="tableData" style="width:100%" stripe>
+      <el-table
+        v-if="!recipeInsertFlag"
+        key="noRecipeInsertFlag"
+        :data="tableData"
+        style="width:100%"
+        stripe
+      >
         <el-table-column prop="name" label="药品名称" width="200px"/>
-        <el-table-column label="剂量" width="100px">
+        <el-table-column label="剂量">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.dosage" size="mini" type="number" min="0"/>
+            <el-input v-model="scope.row.dosage" size="mini"/>
           </template>
         </el-table-column>
-        <el-table-column label="剂量单位" width="80px">
+        <el-table-column label="剂量单位" width="100px">
           <template slot-scope="scope">
             <el-input v-model="scope.row.dosageUnit" size="mini"/>
           </template>
@@ -44,10 +50,10 @@
         </el-table-column>
         <el-table-column label="天数" width="80px">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.day" size="mini" type="number" step="1" min="1"/>
+            <el-input v-model="scope.row.day" size="mini"/>
           </template>
         </el-table-column>
-        <el-table-column prop label="用法">
+        <el-table-column prop label="用法" width="150px">
           <template slot-scope="scope">
             <el-select v-model="scope.row.method" placeholder="请选择">
               <el-option
@@ -61,7 +67,7 @@
         </el-table-column>
         <el-table-column label="药品数量">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.amount" size="mini" type="number" step="1" min="1"/>
+            <el-input v-model="scope.row.amount" size="mini"/>
           </template>
         </el-table-column>
         <el-table-column prop="price" label="单价"/>
@@ -72,13 +78,19 @@
         </el-table-column>
       </el-table>
 
-      <el-table v-if="recipeInsertFlag" :data="tableData" style="width:100%" stripe>
+      <el-table
+        v-if="recipeInsertFlag"
+        key="recipeInsertFlag"
+        :data="tableData"
+        style="width:100%"
+        stripe
+      >
         <el-table-column prop="name" label="药品名称" width="200px"/>
-        <el-table-column label="剂量" width="100px" prop="dosage"/>
-        <el-table-column label="剂量单位" width="80px" prop="dosageUnit"/>
+        <el-table-column label="剂量" prop="dosage"/>
+        <el-table-column label="剂量单位" width="100px" prop="dosageUnit"/>
         <el-table-column label="用药频次" width="150px" prop="times"/>
-        <el-table-column label="天数" width="80px" prop="day"/>
-        <el-table-column prop="method" label="用法"/>
+        <el-table-column label="天数" prop="day"/>
+        <el-table-column prop="method" label="用法" width="150px"/>
         <el-table-column label="药品数量" prop="amount"/>
       </el-table>
     </el-main>
@@ -111,7 +123,6 @@ export default {
     }
   },
   mounted() {
-    this.listAllMedicalInPage()
     this.listMedicalTimes()
     this.listMedicalMethod()
     this.getInsertRecipe()
@@ -156,7 +167,14 @@ export default {
       this.tableData.splice(index, 1)
     },
     handleRecipeList() {
-      let flag = false
+      // 信息完整
+      let fullFlag = false
+      // 数值正确
+      let numberFlag = false
+      // 正整数
+      const reg1 = /^[1-9]\d*$/
+      // 正数
+      const reg2 = /^([1-9][0-9]*(\.\d{1,2})?)|(0\.\d{1,2})$/
       if (this.tableData.length === 0) {
         this.$store.state.errorTokenVisible = true
         this.$store.state.errorTokenMessage = '请至少选择一种药品'
@@ -164,33 +182,50 @@ export default {
       }
       this.tableData.forEach(element => {
         if (element.dosage === null || element.dosage.trim() === '') {
-          flag = true
+          fullFlag = true
         }
         if (element.dosageUnit === null || element.dosage.trim() === '') {
-          flag = true
+          fullFlag = true
         }
         if (element.times === null || element.times.trim() === '') {
-          flag = true
+          fullFlag = true
+        }
+        if (element.day === null || element.day.trim() === '') {
+          fullFlag = true
         }
         if (element.method === null || element.method.trim() === '') {
-          flag = true
+          fullFlag = true
         }
         if (element.amount === null || element.amount.trim() === '') {
-          flag = true
+          fullFlag = true
+        }
+        if (!reg2.test(element.dosage)) {
+          numberFlag = true
+        }
+        if (!reg1.test(element.amount)) {
+          numberFlag = true
+        }
+        if (!reg1.test(element.day)) {
+          numberFlag = true
         }
       })
       this.tableData[0].userReservationUuid = localStorage.getItem(
         'userReservationUuId'
       )
-      if (flag) {
+      if (fullFlag) {
         this.$store.state.errorTokenVisible = true
         this.$store.state.errorTokenMessage = '请将药品信息填写完整'
+      } else if (numberFlag) {
+        this.$store.state.errorTokenVisible = true
+        this.$store.state.errorTokenMessage = '药品信息不正确'
       } else {
         insertRecipe(this.tableData).then(response => {
           if (response.data.returnCode === 200) {
             this.$store.state.errorTokenVisible = true
             this.$store.state.errorTokenMessage = '处方信息添加成功'
-            this.getInsertRecipe()
+            this.recipeInsertFlag = true
+            this.$store.state.hasMedicalFlag = true
+            this.$store.state.activeName = 'priview'
           }
         })
       }
@@ -219,6 +254,7 @@ export default {
               this.$store.state.hasMedicalFlag = true
               this.tableData = response.data.returnData
             } else {
+              this.listAllMedicalInPage()
               this.recipeInsertFlag = false
               this.tableData = []
               this.$store.state.hasMedicalFlag = false

@@ -158,17 +158,15 @@
       <div v-if="!recipeFlag" style="font-weight:700">暂无处方</div>
     </div>
 
-    <div
-      v-if="userReservation.isEvaluate === '1'"
-      style="margin-bottom:80px"
-    >
+    <div v-if="userReservation.isEvaluate === '1'" style="margin-bottom:80px">
       <div class="title-line">星级评价</div>
       <div class="block">
         <el-rate
-          :v-model="userReservation.evaluateStar"
-          :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+          v-model="userReservation.evaluateStar"
+          :score-template="userReservation.evaluateStar"
           disabled
-          @change="starVisableFlag = true"
+          show-score
+          text-color="#ff9900"
         />
       </div>
     </div>

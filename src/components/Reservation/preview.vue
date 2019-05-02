@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-main>
+    <el-main style="padding:0">
       <div>
         <div class="title-line">诊断</div>
         <div v-if="!this.$store.state.hasDiagnoseFlag">暂无诊断</div>
@@ -10,7 +10,7 @@
       <div style="margin-top:50px">
         <div class="title-line">处方</div>
         <div v-if="!this.$store.state.hasMedicalFlag">暂无处方</div>
-        <give-medical v-if="this.$store.state.hasDiagnoseFlag"/>
+        <give-medical v-if="this.$store.state.hasMedicalFlag"/>
       </div>
     </el-main>
     <el-footer style="text-align:center">
@@ -40,17 +40,25 @@ export default {
   },
   methods: {
     confirmDoctorReservation() {
-      confirmDoctorReservation(
-        localStorage.getItem('userReservationUuId')
-      ).then(response => {
-        if (response.data.returnCode === 200) {
-          this.$store.state.errorTokenVisible = true
-          this.$store.state.errorTokenMessage = '医嘱提交成功'
-          this.$router.push({
-            name: 'ReservationList'
-          })
-        }
-      })
+      if (
+        this.$store.state.hasDiagnoseFlag &&
+        this.$store.state.hasMedicalFlag
+      ) {
+        confirmDoctorReservation(
+          localStorage.getItem('userReservationUuId')
+        ).then(response => {
+          if (response.data.returnCode === 200) {
+            this.$store.state.errorTokenVisible = true
+            this.$store.state.errorTokenMessage = '医嘱提交成功'
+            this.$router.push({
+              name: 'ReservationList'
+            })
+          }
+        })
+      } else {
+        this.$store.state.errorTokenVisible = true
+        this.$store.state.errorTokenMessage = '未诊断或未开药'
+      }
     }
   }
 }

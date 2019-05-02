@@ -8,57 +8,72 @@
       :rules="rules"
       label-width="100px"
       class="demo-diagnoseForm"
-      style="width:50%;"
+      style="width:600px;"
     >
       <el-form-item label="主诉" prop="complain">
-        <el-input v-if="!hasDiagnoseFlag" v-model="diagnoseForm.complain" type="textarea" autosize/>
+        <el-input
+          v-if="!hasDiagnoseFlag"
+          v-model="diagnoseForm.complain"
+          :autosize="{ minRows: 2}"
+          type="textarea"
+        />
         <div v-else>{{ diagnose.complain }}</div>
       </el-form-item>
-      <el-form-item label="现病史" prop="presentHistory">
+      <el-form-item label="现病史" prop="presentHistory" style="margin-top:30px">
         <el-input
           v-if="!hasDiagnoseFlag"
           v-model="diagnoseForm.presentHistory"
+          :autosize="{ minRows: 2}"
           type="textarea"
-          autosize
         />
         <div v-else>{{ diagnose.presentHistory }}</div>
       </el-form-item>
-      <el-form-item label="既往史" prop="pastHistory">
+      <el-form-item label="既往史" prop="pastHistory" style="margin-top:30px">
         <el-input
           v-if="!hasDiagnoseFlag"
           v-model="diagnoseForm.pastHistory"
+          :autosize="{ minRows: 2}"
           type="textarea"
-          autosize
         />
         <div v-else>{{ diagnose.pastHistory }}</div>
       </el-form-item>
-      <el-form-item label="过敏史" prop="allergicHistory">
+      <el-form-item label="过敏史" prop="allergicHistory" style="margin-top:30px">
         <el-input
           v-if="!hasDiagnoseFlag"
           v-model="diagnoseForm.allergicHistory"
+          :autosize="{ minRows: 2}"
           type="textarea"
-          autosize
         />
         <div v-else>{{ diagnose.allergicHistory }}</div>
       </el-form-item>
-      <el-form-item label="初步诊断" prop="firstDiagnose">
+      <el-form-item label="初步诊断" prop="firstDiagnose" style="margin-top:30px">
         <el-input
           v-if="!hasDiagnoseFlag"
           v-model="diagnoseForm.firstDiagnose"
+          :autosize="{ minRows: 2}"
           type="textarea"
-          autosize
         />
         <div v-else>{{ diagnose.firstDiagnose }}</div>
       </el-form-item>
-      <el-form-item label="诊断意见" prop="advice">
-        <el-input v-if="!hasDiagnoseFlag" v-model="diagnoseForm.advice" type="textarea" autosize/>
+      <el-form-item label="诊断意见" prop="advice" style="margin-top:30px">
+        <el-input
+          v-if="!hasDiagnoseFlag"
+          v-model="diagnoseForm.advice"
+          :autosize="{ minRows: 2}"
+          type="textarea"
+        />
         <div v-else>{{ diagnose.advice }}</div>
       </el-form-item>
-      <el-form-item label="处理" prop="dispose">
-        <el-input v-if="!hasDiagnoseFlag" v-model="diagnoseForm.dispose" type="textarea" autosize/>
+      <el-form-item label="处理" prop="dispose" style="margin-top:30px">
+        <el-input
+          v-if="!hasDiagnoseFlag"
+          v-model="diagnoseForm.dispose"
+          :autosize="{ minRows: 2}"
+          type="textarea"
+        />
         <div v-else>{{ diagnose.dispose }}</div>
       </el-form-item>
-      <el-form-item v-if="!hasDiagnoseFlag">
+      <el-form-item v-if="!hasDiagnoseFlag" style="margin-top:30px">
         <el-button type="primary" @click="submitForm('diagnoseForm')">填写诊断</el-button>
         <el-button @click="resetForm('diagnoseForm')">重置表单</el-button>
       </el-form-item>
@@ -105,7 +120,9 @@ export default {
             if (response.data.returnCode === 200) {
               this.$store.state.errorTokenVisible = true
               this.$store.state.errorTokenMessage = '诊断填写成功'
-              this.getDiagnoseByUserReservationUuId()
+              this.$store.state.activeName = 'giveMedical'
+              this.hasDiagnoseFlag = true
+              this.$store.state.hasDiagnoseFlag = true
             }
           })
         } else {

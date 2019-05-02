@@ -2,7 +2,7 @@
   <div>
     <el-container>
       <el-header style="margin-top:50px">
-        <el-row>
+        <el-row :gutter="30">
           <el-col :xs="12" :sm="12" :md="12" :lg="10" :xl="6">
             <div class="block">
               <span style="margin-left:20px;margin-right:10px">日期</span>
@@ -18,7 +18,7 @@
           </el-col>
           <el-col :xs="12" :sm="12" :md="12" :lg="10" :xl="6">
             <el-input
-              v-model="input21"
+              v-model="patientName"
               clearable
               placeholder="请输入患者姓名"
               prefix-icon="el-icon-search"
@@ -43,14 +43,17 @@
           <el-tab-pane label="待审核" name="待审核" lazy>
             <reservation-table :reservation-data="reservationData" :status="13"/>
           </el-tab-pane>
-          <el-tab-pane label="已审核" name="已审核" lazy>
-            <reservation-table :reservation-data="reservationData"/>
+          <el-tab-pane label="审核通过" name="审核通过" lazy>
+            <reservation-table :reservation-data="reservationData" :status="14"/>
+          </el-tab-pane>
+          <el-tab-pane label="审核不通过" name="审核不通过" lazy>
+            <reservation-table :reservation-data="reservationData" :status="16"/>
           </el-tab-pane>
           <el-tab-pane label="待评价" name="待评价" lazy>
-            <reservation-table :reservation-data="reservationData"/>
+            <reservation-table :reservation-data="reservationData" :status="17"/>
           </el-tab-pane>
           <el-tab-pane label="已评价" name="已评价" lazy>
-            <reservation-table :reservation-data="reservationData"/>
+            <reservation-table :reservation-data="reservationData" :status="18"/>
           </el-tab-pane>
         </el-tabs>
       </el-main>
@@ -70,7 +73,6 @@ export default {
     return {
       date: [''],
       activeName: '待就诊(今日)',
-      input21: '',
       startScheduleTime: '',
       endScheduleTime: '',
       status: 1,
@@ -104,12 +106,17 @@ export default {
       } else {
         today = ''
       }
-      if (this.date[0] !== null && this.date[1] !== null) {
+      if (this.date !== null) {
+        if (this.date.length === 2) {
+          startTime = this.startTime
+          endTime = this.endTime
+        } else {
+          startTime = today
+          endTime = today
+        }
+      } else {
         startTime = today
         endTime = today
-      } else {
-        startTime = this.startTime
-        endTime = this.endTime
       }
       this.status = status
       getUserReservationOfDoctor(
@@ -138,8 +145,10 @@ export default {
         this.todayUserReservation(12, false)
       } else if (tab.name === '待审核') {
         this.todayUserReservation(13, false)
-      } else if (tab.name === '已审核') {
+      } else if (tab.name === '审核通过') {
         this.todayUserReservation(14, false)
+      } else if (tab.name === '审核不通过') {
+        this.todayUserReservation(16, false)
       } else if (tab.name === '待评价') {
         this.todayUserReservation(17, false)
       } else if (tab.name === '已评价') {

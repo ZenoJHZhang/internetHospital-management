@@ -9,6 +9,18 @@
       <el-table-column prop="clinicDate" label="预约日期"/>
       <el-table-column prop="clinicTime" label="预约时段"/>
       <el-table-column prop="statusDescription" label="状态"/>
+      <el-table-column v-if="status === 16" prop="examineFailReason" label="审核不通过原因"/>
+      <el-table-column v-if="status === 18" label="评价星级">
+        <template slot-scope="scope">
+          <el-rate
+            v-model="scope.row.evaluateStar"
+            :score-template="scope.row.evaluateStar"
+            disabled
+            show-score
+            text-color="#ff9900"
+          />
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
           <el-button
@@ -27,12 +39,25 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog :visible.sync="dialogVisible" title="提示" width="30%">
+      <el-form ref="form" :inline="true" :model="form" :rules="rules">
+        <el-form-item label="请填写过号原因" prop="reason">
+          <el-input v-model="form.reason" placeholder="过号原因"/>
+        </el-form-item>
+        <br>
+        <el-form-item>
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirm('form')">确 定</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
+import { passUserReservation } from '@/api/reservation'
 export default {
   props: {
     reservationData: {
@@ -52,7 +77,15 @@ export default {
       oneButtonFlag: false,
       code: 0,
       message: '',
-      clinicState: 0
+      clinicState: 0,
+      colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
+      value: '3.7',
+      dialogVisible: false,
+      uuId: '',
+      form: {},
+      rules: {
+        reason: [{ required: true, message: '请输入过号原因', trigger: 'blur' }]
+      }
     }
   },
   created() {
@@ -133,7 +166,9 @@ export default {
     },
     connect() {
       // const socket = new SockJS("https://localhost:8080/myWebSocket");
-      const socket = new SockJS('https://management.woniuyiliao.cn/api/myWebSocket')
+      const socket = new SockJS(
+        'https://management.woniuyiliao.cn/api/myWebSocket'
+      )
       const headers = {
         Authorization: localStorage.getItem('token')
       }
@@ -169,6 +204,25 @@ export default {
           console.log(err)
         }
       )
+    },
+    forwardCall(index, row) {
+      this.uuId = row.uuId
+      this.dialogVisible = true
+    },
+    confirm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          passUserReservation(this.uuId, this.form.reason).then(response => {
+            if (response.data.returnCode === 200) {
+              this.dialogVisible = false
+              this.$store.state.errorTokenVisible = true
+              this.$store.state.errorTokenMessage = '患者已过号'
+            }
+          })
+        } else {
+          return false
+        }
+      })
     }
   }
 }
