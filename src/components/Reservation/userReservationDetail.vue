@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="lineClass">
-        <div style="width:100%">
+        <div class="longDetailClass">
           <label style="color:black">疾病描述：</label>
           <span>{{ userReservation.conditionDesc }}</span>
         </div>
@@ -130,6 +130,15 @@ export default {
 }
 .detailClass span {
   margin-left: 5%;
+}
+.longDetailClass {
+  display: inline-block;
+  width: 90%;
+}
+.longDetailClass span {
+  width: 100% !important;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 .lineClass {
   margin-bottom: 50px;

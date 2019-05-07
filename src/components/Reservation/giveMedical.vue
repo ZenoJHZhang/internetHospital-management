@@ -223,9 +223,8 @@ export default {
           if (response.data.returnCode === 200) {
             this.$store.state.errorTokenVisible = true
             this.$store.state.errorTokenMessage = '处方信息添加成功'
-            this.recipeInsertFlag = true
-            this.$store.state.hasMedicalFlag = true
-            this.$store.state.activeName = 'priview'
+            this.$store.state.activeName = 'preview'
+            this.getInsertRecipe()
           }
         })
       }

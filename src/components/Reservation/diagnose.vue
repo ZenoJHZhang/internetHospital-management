@@ -121,8 +121,7 @@ export default {
               this.$store.state.errorTokenVisible = true
               this.$store.state.errorTokenMessage = '诊断填写成功'
               this.$store.state.activeName = 'giveMedical'
-              this.hasDiagnoseFlag = true
-              this.$store.state.hasDiagnoseFlag = true
+              this.getDiagnoseByUserReservationUuId()
             }
           })
         } else {

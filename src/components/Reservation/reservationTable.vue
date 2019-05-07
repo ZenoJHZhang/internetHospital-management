@@ -57,7 +57,6 @@
 <script>
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
-import { passUserReservation } from '@/api/reservation'
 export default {
   props: {
     reservationData: {
@@ -85,7 +84,8 @@ export default {
       form: {},
       rules: {
         reason: [{ required: true, message: '请输入过号原因', trigger: 'blur' }]
-      }
+      },
+      passIndex: 0
     }
   },
   created() {
@@ -130,6 +130,7 @@ export default {
           this.$store.state.errorTokenVisible = true
           this.$store.state.errorTokenMessage = '未到叫号时段'
         }
+        this.callPatient(index, row)
       } else if (this.status === 11) {
         const obj = JSON.stringify(row)
         localStorage.setItem('userReservation', obj)
@@ -148,13 +149,15 @@ export default {
     },
     callPatient(index, row) {
       const obj = JSON.stringify(row)
-      var doctorCallRegNo = row.regNo
       const value = {
         userReservationUuId: row.uuId,
-        token: localStorage.getItem('token'),
-        doctorCallRegNo: doctorCallRegNo
+        token: localStorage.getItem('token')
       }
-      this.stompClient.send('/doc/pushClinicState', {}, JSON.stringify(value))
+      this.stompClient.send(
+        '/doc/callUseReservation',
+        {},
+        JSON.stringify(value)
+      )
       localStorage.setItem('userReservation', obj)
       localStorage.setItem('userReservationUuId', row.uuId)
     },
@@ -182,17 +185,18 @@ export default {
               const o = JSON.parse(msg.body)
               this.code = o.code
               this.message = o.message
-              if (
-                this.code === 0 &&
-                this.clinicState != null &&
-                this.clinicState === 0
-              ) {
+              if (this.code === 0) {
                 this.$router.push({
                   name: 'DoctorClinic'
                 })
               } else if (this.code === 1) {
                 this.$store.state.errorTokenVisible = true
                 this.$store.state.errorTokenMessage = this.message
+              } else if (this.code === 2) {
+                this.dialogVisible = false
+                this.$store.state.errorTokenVisible = true
+                this.$store.state.errorTokenMessage = '患者已过号'
+                this.reservationData.splice(this.passIndex, 1)
               }
             },
             {}
@@ -208,17 +212,21 @@ export default {
     forwardCall(index, row) {
       this.uuId = row.uuId
       this.dialogVisible = true
+      this.passIndex = index
     },
     confirm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          passUserReservation(this.uuId, this.form.reason).then(response => {
-            if (response.data.returnCode === 200) {
-              this.dialogVisible = false
-              this.$store.state.errorTokenVisible = true
-              this.$store.state.errorTokenMessage = '患者已过号'
-            }
-          })
+          const value = {
+            userReservationUuId: this.uuId,
+            token: localStorage.getItem('token'),
+            passReason: this.form.reason
+          }
+          this.stompClient.send(
+            '/doc/passUserReservation',
+            {},
+            JSON.stringify(value)
+          )
         } else {
           return false
         }

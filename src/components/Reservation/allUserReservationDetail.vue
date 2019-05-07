@@ -90,37 +90,37 @@
     <div v-if="diagnoseFlag">
       <div v-if="diagnoseVisableFlag" class="reservationStyle">
         <div class="lineClass">
-          <div class="detailClass">
+          <div class="longDetailClass">
             <label style="color:black">主诉：</label>
             <span>{{ userReservation.diagnose.complain != ''?userReservation.diagnose.complain :'暂无主诉' }}</span>
           </div>
         </div>
         <div class="lineClass">
-          <div class="detailClass">
+          <div class="longDetailClass">
             <label style="color:black">现病史：</label>
             <span>{{ userReservation.diagnose.presentHistory !='' ?userReservation.diagnose.presentHistory:'暂无现病史' }}</span>
           </div>
         </div>
         <div class="lineClass">
-          <div class="detailClass">
+          <div class="longDetailClass">
             <label style="color:black">既往史：</label>
             <span>{{ userReservation.diagnose.pastHistory != ""? userReservation.diagnose.pastHistory:'暂无既往史：' }}</span>
           </div>
         </div>
         <div class="lineClass">
-          <div class="detailClass">
+          <div class="longDetailClass">
             <label style="color:black">过敏史：</label>
             <span>{{ userReservation.diagnose.allergicHistory != ""? userReservation.diagnose.allergicHistory:'暂无过敏史：' }}</span>
           </div>
         </div>
         <div class="lineClass">
-          <div class="detailClass">
+          <div class="longDetailClass">
             <label style="color:black">初步诊断：</label>
             <span>{{ userReservation.diagnose.firstDiagnose != ""? userReservation.diagnose.firstDiagnose:'暂无初步诊断：' }}</span>
           </div>
         </div>
         <div class="lineClass">
-          <div class="detailClass">
+          <div class="longDetailClass">
             <label style="color:black">诊断意见：</label>
             <span>{{ userReservation.diagnose.advice != ""? userReservation.diagnose.advice:'暂无诊断意见：' }}</span>
           </div>
@@ -277,6 +277,15 @@ export default {
 }
 .detailClass span {
   margin-left: 5%;
+}
+.longDetailClass {
+  display: inline-block;
+  width: 90%;
+}
+.longDetailClass span {
+  width: 100% !important;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 .lineClass {
   margin-bottom: 25px;

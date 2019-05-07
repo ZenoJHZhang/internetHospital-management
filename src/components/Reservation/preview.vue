@@ -21,14 +21,12 @@
 
 <script>
 import noComment from '@/components/common/noComment'
-import userReservationDetail from '@/components/Reservation/userReservationDetail'
 import diagnose from '@/components/Reservation/diagnose'
 import giveMedical from '@/components/Reservation/giveMedical'
 import { confirmDoctorReservation } from '@/api/reservation'
 export default {
   components: {
     noComment,
-    userReservationDetail,
     diagnose,
     giveMedical
   },
