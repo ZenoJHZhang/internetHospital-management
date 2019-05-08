@@ -44,7 +44,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="挂号价格" prop="price" style="width:30%">
-          <el-input v-model="departmentForm.price" max="400" type="number" step="0.1"/>
+          <el-input v-model="departmentForm.price" max="400"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('departmentForm')">立即新增</el-button>
@@ -71,7 +71,7 @@ export default {
         introduce: '',
         phone: '',
         deptType: '',
-        price: '0.00',
+        price: '1.00',
         id: '',
         imgPath:
           'https://www.woniuyiliao.cn/image/department/ff74c676-984e-4c7c-972f-28b94a3be1bb.png'
@@ -123,26 +123,33 @@ export default {
           if (this.changeImgFlag) {
             this.$set(obj, 'imgStr', this.imgDataUrl)
           }
-          insertDepartment(this.departmentForm).then(response => {
-            if (response.data.returnCode === 200) {
-              if (this.changeImgFlag) {
-                insertDepartmentImg(
-                  obj,
-                  response.data.returnData
-                ).then(response => {
-                  if (response.data.returnCode === 200) {
-                    this.$store.state.errorTokenVisible = true
-                    this.$store.state.errorTokenMessage = '新增科室成功！'
-                    this.$router.push({ name: 'DeparmentManagement' })
-                  }
-                })
-              } else {
-                this.$store.state.errorTokenVisible = true
-                this.$store.state.errorTokenMessage = '新增科室成功！'
-                this.$router.push({ name: 'DeparmentManagement' })
+          const reg = /^([1-9][0-9]*(\.\d{1,2})?)|(0\.\d{1,2})$/
+          if (!reg.test(this.departmentForm.price)) {
+            this.$message({
+              message: '科室挂号价格需大于0',
+              type: 'error'
+            })
+          } else {
+            insertDepartment(this.departmentForm).then(response => {
+              if (response.data.returnCode === 200) {
+                if (this.changeImgFlag) {
+                  insertDepartmentImg(obj, response.data.returnData).then(
+                    response => {
+                      if (response.data.returnCode === 200) {
+                        this.$store.state.errorTokenVisible = true
+                        this.$store.state.errorTokenMessage = '新增科室成功！'
+                        this.$router.push({ name: 'DeparmentManagement' })
+                      }
+                    }
+                  )
+                } else {
+                  this.$store.state.errorTokenVisible = true
+                  this.$store.state.errorTokenMessage = '新增科室成功！'
+                  this.$router.push({ name: 'DeparmentManagement' })
+                }
               }
-            }
-          })
+            })
+          }
         } else {
           return false
         }

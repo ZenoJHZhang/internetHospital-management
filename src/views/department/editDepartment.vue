@@ -45,7 +45,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="挂号价格" prop="price" style="width:30%">
-          <el-input v-model="departmentForm.price" max="400" type="number" step="0.1"/>
+          <el-input v-model="departmentForm.price" max="400"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('departmentForm')">立即更新</el-button>
@@ -125,25 +125,33 @@ export default {
           if (this.changeImgFlag) {
             this.$set(obj, 'imgStr', this.imgDataUrl)
           }
-          updateDepartment(this.departmentForm).then(response => {
-            if (response.data.returnCode === 200) {
-              if (this.changeImgFlag) {
-                insertDepartmentImg(obj, response.data.returnData).then(
-                  response => {
-                    if (response.data.returnCode === 200) {
-                      this.$store.state.errorTokenVisible = true
-                      this.$store.state.errorTokenMessage = '更新科室成功！'
-                      this.$router.go(-1)
+          const reg = /^([1-9][0-9]*(\.\d{1,2})?)|(0\.\d{1,2})$/
+          if (!reg.test(this.departmentForm.price)) {
+            this.$message({
+              message: '科室挂号价格需大于0',
+              type: 'error'
+            })
+          } else {
+            updateDepartment(this.departmentForm).then(response => {
+              if (response.data.returnCode === 200) {
+                if (this.changeImgFlag) {
+                  insertDepartmentImg(obj, response.data.returnData).then(
+                    response => {
+                      if (response.data.returnCode === 200) {
+                        this.$store.state.errorTokenVisible = true
+                        this.$store.state.errorTokenMessage = '更新科室成功！'
+                        this.$router.go(-1)
+                      }
                     }
-                  }
-                )
-              } else {
-                this.$store.state.errorTokenVisible = true
-                this.$store.state.errorTokenMessage = '更新科室成功！'
-                this.$router.go(-1)
+                  )
+                } else {
+                  this.$store.state.errorTokenVisible = true
+                  this.$store.state.errorTokenMessage = '更新科室成功！'
+                  this.$router.go(-1)
+                }
               }
-            }
-          })
+            })
+          }
         } else {
           return false
         }

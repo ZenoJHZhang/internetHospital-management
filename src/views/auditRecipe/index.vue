@@ -2,12 +2,12 @@
   <div>
     <el-container style="margin-left:3px">
       <el-aside width="45%">
-        <div style="margin-top:25px;margin-bottom:20px">
-          <span>审核状态选择</span>
+        <div style="margin-top:25px;margin-bottom:20px;">
+          <span style="margin-right:15px">审核状态选择</span>
           <el-select
             v-model="auditStatus"
             placeholder="审核状态选择"
-            @change="getUserReservationByAuditStatus"
+            @change="changeStatus"
           >
             <el-option
               v-for="item in options"
@@ -31,11 +31,20 @@
           </el-table-column>
         </el-table>
         <div style="text-align:center;margin-top:50px">
-          <el-pagination :total="total" layout="prev, pager, next"/>
+          <el-pagination
+            :total="total"
+            :current-page.sync="pageNo"
+            :page-size="pageSize"
+            layout="prev, pager, next"
+            @current-change="getUserReservationByAuditStatus()"
+          />
         </div>
       </el-aside>
       <el-main>
-        <all-user-reservation-detail v-if="clickFlag" :user-reservation-uu-id="userReservationUuId"/>
+        <all-user-reservation-detail
+          v-if="clickFlag"
+          :user-reservation-uu-id="userReservationUuId"
+        />
       </el-main>
     </el-container>
     <el-dialog :visible.sync="dialogVisible" title="提示" width="30%">
@@ -157,6 +166,10 @@ export default {
           return false
         }
       })
+    },
+    changeStatus() {
+      this.pageNo = 1
+      this.getUserReservationByAuditStatus()
     }
   }
 }

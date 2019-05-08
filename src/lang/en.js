@@ -22,6 +22,7 @@ export default {
     clinicResult: 'ClinicResult',
     reservationDetail: 'ReservationDetail',
     preview: 'Preview',
+    auditRefund: 'AuditRefund',
     auditRecipe: 'AuditRecipe',
     components: 'Components',
     componentIndex: 'Introduction',

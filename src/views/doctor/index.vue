@@ -204,7 +204,7 @@ export default {
         if (response.data.returnCode === 200) {
           this.$store.state.errorTokenVisible = true
           this.$store.state.errorTokenMessage = '删除医生成功！'
-          this.listDoctorByNameOrNumberWithDepartmentId(0)
+          this.listDoctorByNameOrNumberWithDepartmentId()
         }
       })
     }

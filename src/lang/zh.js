@@ -23,6 +23,7 @@ export default {
     reservationDetail: '就诊详情',
     preview: '医嘱预览',
     auditRecipe: '审核药方',
+    auditRefund: '退款申请审核',
     components: '组件',
     componentIndex: '介绍',
     tinymce: '富文本编辑器',

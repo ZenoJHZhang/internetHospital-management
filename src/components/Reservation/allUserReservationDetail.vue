@@ -72,7 +72,7 @@
         </div>
         <no-comment
           v-if="imgPathList.length === 0"
-          style="margin-top:50px;margin-bottom:150px;text-align:center"
+          style="margin-top:50px;margin-bottom:50px;text-align:center"
           title="暂无图片"
         />
       </div>
@@ -146,7 +146,7 @@
             <el-table-column prop="name" label="药品名称"/>
             <el-table-column prop="unit" label="规格" width="50"/>
             <el-table-column prop="type" label="类型" width="50"/>
-            <el-table-column prop="price" label="单价" width="50"/>
+            <el-table-column prop="price" label="单价" width="100"/>
             <el-table-column prop="amount" label="数量" width="50"/>
             <el-table-column prop="dosageDetail" label="每次服用剂量" width="120"/>
             <el-table-column prop="times" label="用药频次"/>

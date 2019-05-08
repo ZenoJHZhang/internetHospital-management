@@ -259,6 +259,23 @@ export const asyncRouterMap = [{
   }]
 },
 {
+  path: '/auditRefund',
+  component: Layout,
+  meta: {
+    roles: ['superAdmin', 'doctorAdmin']
+  },
+  children: [{
+    component: () => import('@/views/auditRefund/index'),
+    path: 'index',
+    name: 'AuditRefund',
+    meta: {
+      title: 'auditRefund',
+      roles: ['superAdmin', 'doctorAdmin'],
+      icon: '审核'
+    }
+  }]
+},
+{
   path: '*',
   redirect: '/404',
   hidden: true

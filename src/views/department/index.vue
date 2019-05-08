@@ -208,7 +208,7 @@ export default {
         if (response.data.returnCode === 200) {
           this.$store.state.errorTokenVisible = true
           this.$store.state.errorTokenMessage = '删除科室成功！'
-          this.listDepartmentByNameOrNumberWithDepartmentMessage(0)
+          this.listDepartmentByNameOrNumberWithDepartmentMessage()
         }
       })
     },

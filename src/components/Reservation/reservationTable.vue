@@ -42,7 +42,12 @@
     <el-dialog :visible.sync="dialogVisible" title="提示" width="30%">
       <el-form ref="form" :inline="true" :model="form" :rules="rules">
         <el-form-item label="请填写过号原因" prop="reason">
-          <el-input v-model="form.reason" placeholder="过号原因"/>
+          <el-input
+            v-model="form.reason"
+            :autosize="{ minRows: 2}"
+            placeholder="过号原因"
+            type="textarea"
+          />
         </el-form-item>
         <br>
         <el-form-item>
