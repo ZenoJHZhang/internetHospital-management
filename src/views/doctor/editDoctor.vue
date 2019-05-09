@@ -285,7 +285,7 @@ export default {
       this.changeImgFlag = true
     },
     goBack() {
-      this.$router.push({ name: 'DeparmentManagement' })
+      this.$router.push({ name: 'DoctorManagement' })
     },
     /**
      * 从所属科室列表移除该科室

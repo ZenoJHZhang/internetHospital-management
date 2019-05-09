@@ -78,13 +78,15 @@
             </template>
           </el-table-column>
           <el-table-column label="操作">
-            <template slot-scope="scope" >
+            <template slot-scope="scope">
               <el-button
+                :disabled="scope.row.start"
                 size="mini"
                 type="success"
                 @click="updateScheduleDepartment(scope.row)"
               >更新排班</el-button>
               <el-button
+                :disabled="scope.row.start"
                 size="mini"
                 type="danger"
                 @click="handleDelete(scope.$index, scope.row)"
@@ -223,6 +225,7 @@ export default {
               }
             })
           })
+          console.log(this.tableData)
         }
       })
     },
