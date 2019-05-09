@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-aside width="60%" style="padding:20px">
+    <el-aside width="65%" style="padding:20px">
       <el-tabs v-model="$store.state.activeName">
         <el-tab-pane label="病情诊断" name="diagnose">
           <diagnose/>

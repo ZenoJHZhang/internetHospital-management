@@ -135,7 +135,6 @@ export default {
           this.$store.state.errorTokenVisible = true
           this.$store.state.errorTokenMessage = '未到叫号时段'
         }
-        this.callPatient(index, row)
       } else if (this.status === 11) {
         const obj = JSON.stringify(row)
         localStorage.setItem('userReservation', obj)
