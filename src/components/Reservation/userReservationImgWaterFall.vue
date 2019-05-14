@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     height() {
-      return (parseInt((this.imgsArr.length) / 3) + 1) * 200
+      return (parseInt((this.imgsArr.length) / 3) + 1) * 250
     }
   },
   mounted() {
