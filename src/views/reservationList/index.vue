@@ -3,7 +3,7 @@
     <el-container>
       <el-header style="margin-top:50px">
         <el-row :gutter="30">
-          <el-col :xs="12" :sm="12" :md="12" :lg="10" :xl="6">
+          <el-col :xs="12" :sm="12" :md="12" :lg="10" :xl="8">
             <div class="block">
               <span style="margin-left:20px;margin-right:10px">日期</span>
               <el-date-picker
@@ -16,7 +16,7 @@
               />
             </div>
           </el-col>
-          <el-col :xs="12" :sm="12" :md="12" :lg="10" :xl="6">
+          <el-col :xs="12" :sm="12" :md="12" :lg="10" :xl="8">
             <el-input
               v-model="patientName"
               clearable
